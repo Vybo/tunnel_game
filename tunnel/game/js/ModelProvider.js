@@ -34,10 +34,12 @@ class ModelProvider {
 
     easyObstacle() {
         let obstacle = this.loadedModels.easy1.clone();
-        obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-        obstacle.scale.set(5.1, 5.1, 5.1);
+        obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 50, specular: 0x111111 } );
+        let scale = 0.1 + tubeDiameter;
+        obstacle.scale.set(scale, scale, scale);
         obstacle.rotation.x = Math.PI / 2;
         obstacle.rotation.y += GeometryGenerators.randomFloat(0, Math.PI / 2);
+        obstacle.position.z = -1; // Default distance when generated, used by reduce function in engine.
         return obstacle;
     }
 }

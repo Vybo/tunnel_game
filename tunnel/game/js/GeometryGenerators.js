@@ -6,7 +6,7 @@ class GeometryGenerators {
         let path = new THREE.LineCurve(v1, v2);
 
         let geometry = new THREE.TubeGeometry(path, 1, scale, 20, false);
-        let material = new THREE.MeshPhongMaterial( { color: 0x2194ce, side: THREE.BackSide, shininess: 30, specular: 0xffffff } );
+        let material = new THREE.MeshPhongMaterial( { color: 0x2194ce, side: THREE.BackSide, shininess: 40, specular: 0x111111 } );
         let mesh = new THREE.Mesh(geometry, material);
 
         return mesh;
@@ -34,6 +34,14 @@ class GeometryGenerators {
 
     static randomColor() {
         return Math.random() * 0xffffff;
+    }
+
+    static lightFixture() {
+        let geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.3 );
+        let material = new THREE.MeshPhongMaterial( { color: 0xff0000, shininess: 30, specular: 0xffffff } );
+        let cube = new THREE.Mesh( geometry, material );
+
+        return cube;
     }
 }
 
