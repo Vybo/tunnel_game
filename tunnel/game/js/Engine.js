@@ -60,6 +60,7 @@ function checkCollision() {
 
         if (collisions.length > 0 && collisions[0].distance <= maxDistance) {
 
+            updatePositions();
             isRunning = false;
             console.log("Collision");
 
@@ -169,7 +170,7 @@ function regenerateLights() {
     let diameterletoff = 0.3;
     for (i = 0; i < lightsToGenerate / 4; i++) {
 
-        let light1 = new THREE.PointLight( tubeLightsColor, 0.4, 30 );
+        let light1 = new THREE.PointLight( tubeLightsColor, 0.6, 30 );
         light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: tubeLightsColor } ) ) );
         light1.position.x = Math.cos(90) * (tubeDiameter- diameterletoff);
         light1.position.y = Math.sin(90) * (tubeDiameter- diameterletoff);
@@ -201,14 +202,14 @@ function blinkLightsRed(times, onFinished) {
     var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
     lightsBlinkingTween = new TWEEN.Tween(colorValues)
         .to({r: 1.0, b: 0.0, g: 0.0 }, 500)
-        .easing(TWEEN.Easing.Elastic.InOut)
+        .easing(TWEEN.Easing.Quartic.InOut)
         .onUpdate( function() {
             tubeLightsColor.r = colorValues.r;
             tubeLightsColor.g = colorValues.g;
             tubeLightsColor.b = colorValues.b;
             setLightsColor(tubeLightsColor);
         })
-        .repeat(times)
+        .yoyo(true).repeat(times)
         .start()
         .onComplete(function() {
             tubeLightsColor.r = 1.0;
