@@ -6,7 +6,7 @@ class GeometryGenerators {
         let path = new THREE.LineCurve(v1, v2);
 
         let geometry = new THREE.TubeGeometry(path, 1, scale, 20, false);
-        let material = new THREE.MeshPhongMaterial( { color: 0x2194ce, side: THREE.BackSide, shininess: 40, specular: 0x111111 } );
+        let material = new THREE.MeshPhongMaterial( { color: 0x2194ce, side: THREE.BackSide, shininess: 100, specular: 0x111111 } );
         let mesh = new THREE.Mesh(geometry, material);
 
         return mesh;

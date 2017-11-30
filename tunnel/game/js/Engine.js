@@ -20,10 +20,15 @@ var renderer = new THREE.WebGLRenderer();
 var player = GeometryGenerators.cube();
 var pointLight = null;
 
+var lightsBlinkingTween = null;
+var tubeLightsColor = new THREE.Color(1, 1, 1);
+
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
 var modelProvider = new ModelProvider();
+
+var isRunning = false;
 
 function animate() {
 
@@ -36,6 +41,8 @@ function animate() {
     regenerateObstacles();
     updateCameraPosition();
 
+    TWEEN.update();
+
     requestAnimationFrame( animate );
 
     renderer.render( scene, camera );
@@ -43,18 +50,23 @@ function animate() {
 }
 
 function checkCollision() {
+    if (isRunning) {
+        let caster = new THREE.Raycaster();
+        let ray = new THREE.Vector3(0, 0, -(defaultSpeed * difficulty));
+        let maxDistance = 1;
 
-    let caster = new THREE.Raycaster();
-    let ray = new THREE.Vector3(0,0,-(defaultSpeed*difficulty));
-    let maxDistance = 1;
+        caster.set(player.position, ray);
+        let collisions = caster.intersectObjects(obstacles);
 
-    caster.set(player.position, ray);
-    let collisions = caster.intersectObjects(obstacles);
+        if (collisions.length > 0 && collisions[0].distance <= maxDistance) {
 
-    if (collisions.length > 0 && collisions[0].distance <= maxDistance) {
+            isRunning = false;
+            console.log("Collision");
 
-        console.log("Collision");
-        reset();
+            blinkLightsRed(5, function () {
+                reset();
+            });
+        }
     }
 }
 
@@ -65,17 +77,22 @@ function reset() {
         scene.remove(object);
     })
     obstacles = [];
+
+    isRunning = true;
 }
 
 function updatePositions() {
 
-    obstacles.forEach( function(object) {
-        object.position.z += defaultSpeed * difficulty;
-    });
+    if (isRunning) {
 
-    lights.forEach( function(object) {
-        object.position.z += defaultSpeed * difficulty;
-    });
+        obstacles.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+
+        lights.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+    }
 }
 
 function updateRotations() {
@@ -152,8 +169,8 @@ function regenerateLights() {
     let diameterletoff = 0.3;
     for (i = 0; i < lightsToGenerate / 4; i++) {
 
-        let light1 = new THREE.PointLight( 0xffffff, 0.4, 30 );
-        light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffffff } ) ) );
+        let light1 = new THREE.PointLight( tubeLightsColor, 0.4, 30 );
+        light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: tubeLightsColor } ) ) );
         light1.position.x = Math.cos(90) * (tubeDiameter- diameterletoff);
         light1.position.y = Math.sin(90) * (tubeDiameter- diameterletoff);
         light1.position.z = furthestDistance - lightsSpacing;
@@ -170,6 +187,36 @@ function clearObjectsBehindPlayer(array, tolerance) {
             scene.remove(object);
         }
     });
+}
+
+function setLightsColor(color) {
+    lights.forEach( function(light) {
+        light.color.set(color);
+        light.children[0].material = new THREE.MeshBasicMaterial( { color: color } );
+    });
+    tubeLightsColor = color;
+}
+
+function blinkLightsRed(times, onFinished) {
+    var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
+    lightsBlinkingTween = new TWEEN.Tween(colorValues)
+        .to({r: 1.0, b: 0.0, g: 0.0 }, 500)
+        .easing(TWEEN.Easing.Elastic.InOut)
+        .onUpdate( function() {
+            tubeLightsColor.r = colorValues.r;
+            tubeLightsColor.g = colorValues.g;
+            tubeLightsColor.b = colorValues.b;
+            setLightsColor(tubeLightsColor);
+        })
+        .repeat(times)
+        .start()
+        .onComplete(function() {
+            tubeLightsColor.r = 1.0;
+            tubeLightsColor.b = 1.0;
+            tubeLightsColor.g = 1.0;
+            setLightsColor(tubeLightsColor);
+            onFinished()
+        });
 }
 
 function setupScene(){
@@ -201,10 +248,10 @@ function setupScene(){
         scene.add(tube);
     });
 
-    regenerateLights();
-
     modelProvider.loadModels( function(){
         regenerateObstacles();
+        regenerateLights();
+        isRunning = true;
         animate();
     });
 }
