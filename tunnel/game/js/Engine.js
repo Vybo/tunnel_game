@@ -6,6 +6,8 @@ var defaultSpeed = 0.05;
 var numberOfCollisions = 0;
 const tubeDiameter = 5.0;
 const lightsSpacing = 20.0;
+var firstPerson = false;
+var cameraMovementMultiplier = 1.0;
 
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
@@ -17,7 +19,7 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer();
 
-var player = GeometryGenerators.cube();
+var player = null;
 var pointLight = null;
 
 var lightsBlinkingTween = null;
@@ -107,8 +109,8 @@ function updateCameraPosition() {
 
     let bugfixmodifier = 0.6;
 
-    camera.position.x = mousePosition.x * tubeDiameter * bugfixmodifier;
-    camera.position.y = mousePosition.y * tubeDiameter * bugfixmodifier;
+    camera.position.x = mousePosition.x * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
+    camera.position.y = mousePosition.y * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
     player.position.x = mousePosition.x * tubeDiameter * bugfixmodifier;
     player.position.y = mousePosition.y * tubeDiameter * bugfixmodifier;
     pointLight.position.x = mousePosition.x * tubeDiameter * bugfixmodifier;
@@ -220,9 +222,20 @@ function blinkLightsRed(times, onFinished) {
         });
 }
 
-function setupScene(){
+function setupPlayer() {
 
-    camera.position.z = 0;
+    if (firstPerson) {
+        player = GeometryGenerators.cube()
+        camera.position.z = 0;
+    } else {
+        player = modelProvider.ship();
+        scene.add(player);
+        camera.position.z = 1;
+        cameraMovementMultiplier = 0.7;
+    }
+}
+
+function setupScene(){
 
     let light = new THREE.AmbientLight( 0xffffff );
     // scene.add(light);
@@ -250,6 +263,7 @@ function setupScene(){
     });
 
     modelProvider.loadModels( function(){
+        setupPlayer();
         regenerateObstacles();
         regenerateLights();
         isRunning = true;

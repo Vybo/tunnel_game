@@ -140,4 +140,12 @@ class ModelProvider {
     randomObject(array) {
         return array[Math.floor(Math.random()*array.length)];
     }
+
+    ship() {
+        let ship = this.loadedShips.ship1.clone();
+        ship.scale.set(0.002, 0.002, 0.002);
+        ship.position.set(0, 0, 0);
+        ship.rotateY(Math.PI);
+        return ship;
+    }
 }
