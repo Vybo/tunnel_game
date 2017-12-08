@@ -246,12 +246,12 @@ function setLightsColor(color) {
 }
 
 function setScreenGlitch(glitched) {
+    if (!composer) return;
+
     if (glitched) {
-        glitchPass.enabled = true;
-        glitchPass.goWild = true;
+        glitchPass.shouldGlitch = true;
     } else {
-        glitchPass.enabled = false;
-        glitchPass.goWild = false;
+        glitchPass.shouldGlitch = false;
     }
 }
 
@@ -365,9 +365,9 @@ function setupPosprocessing(){
     composer.addPass(new THREE.RenderPass(scene, camera));
     glitchPass = new THREE.GlitchPass();
     glitchPass.renderToScreen = true;
-    glitchPass.visible = false;
+    glitchPass.shouldGlitch = false;
     composer.addPass(glitchPass);
 }
 
+setupPosprocessing();
 setupScene();
-// setupPosprocessing();
