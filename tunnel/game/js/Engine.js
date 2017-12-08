@@ -40,6 +40,7 @@ document.body.appendChild( renderer.domElement );
 var modelProvider = new ModelProvider();
 
 var isRunning = false;
+var exploder = null;
 
 function animate() {
 
@@ -83,6 +84,10 @@ function checkCollision() {
 
             isRunning = false;
             particleSystem1Options.velocity.z = 0.01;
+
+            exploder = new Exploder(collisions[0].object, scene);
+
+
             console.log("Collision");
             setScreenGlitch(true);
             blinkLightsRed(5, function () {
@@ -265,6 +270,10 @@ function blinkLightsRed(times, onFinished) {
             tubeLightsColor.g = colorValues.g;
             tubeLightsColor.b = colorValues.b;
             setLightsColor(tubeLightsColor);
+
+            if (exploder) {
+                exploder.explodeTick();
+            }
         })
         .yoyo(true).repeat(times)
         .start()
@@ -273,6 +282,11 @@ function blinkLightsRed(times, onFinished) {
             tubeLightsColor.b = 1.0;
             tubeLightsColor.g = 1.0;
             setLightsColor(tubeLightsColor);
+
+            if (exploder) {
+                exploder.finishExplosion();
+            }
+
             onFinished()
         });
 }

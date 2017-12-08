@@ -20,8 +20,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="40" lean-forward="false" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
+            <state relative-caret-position="405">
+              <caret line="27" column="38" lean-forward="false" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
               <folding />
             </state>
           </provider>
@@ -30,8 +30,18 @@
       <file leaf-file-name="Engine.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="366" column="36" lean-forward="false" selection-start-line="366" selection-start-column="32" selection-end-line="366" selection-end-column="36" />
+            <state relative-caret-position="334">
+              <caret line="96" column="5" lean-forward="true" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Exploder.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/game/js/Exploder.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="14" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -60,8 +70,8 @@
       <file leaf-file-name="ModelProvider.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/js/ModelProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-588">
-              <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
+            <state relative-caret-position="-1360">
+              <caret line="30" column="20" lean-forward="false" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -79,11 +89,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>check</find>
-      <find>regenerateobs</find>
-      <find>setlights</find>
-      <find>quartic</find>
-      <find>collisi</find>
       <find>obj</find>
       <find>loader</find>
       <find>objload</find>
@@ -103,12 +108,17 @@
       <find>reset</find>
       <find>rend</find>
       <find>animate</find>
-      <find>collision</find>
       <find>randx</find>
       <find>curf</find>
       <find>glitch</find>
       <find>generatetrigger</find>
       <find>gowild</find>
+      <find>remove</find>
+      <find>collision</find>
+      <find>exp</find>
+      <find>exploder</find>
+      <find>modelprovider</find>
+      <find>this.model</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -121,9 +131,10 @@
         <option value="$PROJECT_DIR$/game/js/GeometryGenerators.js" />
         <option value="$PROJECT_DIR$/game/js/Helpers.js" />
         <option value="$PROJECT_DIR$/game/js/ModelProvider.js" />
-        <option value="$PROJECT_DIR$/game/index.html" />
-        <option value="$PROJECT_DIR$/game/js/Engine.js" />
         <option value="$PROJECT_DIR$/game/js/postprocessing/GlitchPass.js" />
+        <option value="$PROJECT_DIR$/game/js/Exploder.js" />
+        <option value="$PROJECT_DIR$/game/js/Engine.js" />
+        <option value="$PROJECT_DIR$/game/index.html" />
       </list>
     </option>
   </component>
@@ -185,13 +196,6 @@
               <item name="tunnel" type="462c0819:PsiDirectoryNode" />
               <item name="game" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tunnel" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tunnel" type="462c0819:PsiDirectoryNode" />
-              <item name="game" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="postprocessing" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="tunnel" type="b2602c69:ProjectViewProjectNode" />
@@ -324,12 +328,12 @@
       <workItem from="1511909701915" duration="1708000" />
       <workItem from="1511911542819" duration="95000" />
       <workItem from="1512075227937" duration="3334000" />
-      <workItem from="1512634248783" duration="16620000" />
+      <workItem from="1512634248783" duration="19342000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42265000" />
+    <option name="totallyTimeSpent" value="44987000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="806" y="23" width="1114" height="1057" extended-state="0" />
@@ -379,7 +383,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="84" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/game/js/Exploder.js</url>
+          <line>2</line>
+          <properties />
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="87" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -640,38 +652,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/GeometryGenerators.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="8" lean-forward="false" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/Helpers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="88" lean-forward="false" selection-start-line="5" selection-start-column="88" selection-end-line="5" selection-end-column="88" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="40" lean-forward="false" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/ModelProvider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-588">
-          <caret line="36" column="20" lean-forward="false" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/js/three.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-560">
@@ -688,10 +668,58 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/Downloads/threejs-cookbook-master/06-particles-postprocessing/06.06-explode-geometry-model.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/Helpers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="88" lean-forward="false" selection-start-line="5" selection-start-column="88" selection-end-line="5" selection-end-column="88" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/GeometryGenerators.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="8" lean-forward="false" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/ModelProvider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1360">
+          <caret line="30" column="20" lean-forward="false" selection-start-line="30" selection-start-column="20" selection-end-line="30" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="27" column="38" lean-forward="false" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/Exploder.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="14" lean-forward="false" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="366" column="36" lean-forward="false" selection-start-line="366" selection-start-column="32" selection-end-line="366" selection-end-column="36" />
+        <state relative-caret-position="334">
+          <caret line="96" column="5" lean-forward="true" selection-start-line="96" selection-start-column="5" selection-end-line="96" selection-end-column="5" />
           <folding />
         </state>
       </provider>
