@@ -20,6 +20,9 @@ var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 var renderer = new THREE.WebGLRenderer();
 var clock = new THREE.Clock();
+var composer = null;
+
+var glitchPass = null;
 
 var player = null;
 var pointLight = null;
@@ -55,7 +58,11 @@ function animate() {
 
     TWEEN.update();
 
-    renderer.render( scene, camera );
+    if (composer) {
+        composer.render();
+    } else {
+        renderer.render(scene, camera);
+    }
 }
 
 function adjustDifficulty() {
@@ -77,7 +84,7 @@ function checkCollision() {
             isRunning = false;
             particleSystem1Options.velocity.z = 0.01;
             console.log("Collision");
-
+            setScreenGlitch(true);
             blinkLightsRed(5, function () {
                 reset();
             });
@@ -86,7 +93,7 @@ function checkCollision() {
 }
 
 function reset() {
-
+    setScreenGlitch(false);
     difficulty = 1.0;
     particleSystem1Options.velocity.z = 1;
     obstacles.forEach(function(object) {
@@ -238,6 +245,16 @@ function setLightsColor(color) {
     tubeLightsColor = color;
 }
 
+function setScreenGlitch(glitched) {
+    if (glitched) {
+        glitchPass.enabled = true;
+        glitchPass.goWild = true;
+    } else {
+        glitchPass.enabled = false;
+        glitchPass.goWild = false;
+    }
+}
+
 function blinkLightsRed(times, onFinished) {
     var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
     lightsBlinkingTween = new TWEEN.Tween(colorValues)
@@ -331,8 +348,8 @@ function setupScene(){
 
     modelProvider.loadModels( function(){
         setupPlayer();
-        regenerateObstacles();
-        regenerateLights();
+        //regenerateObstacles();
+        //regenerateLights();
         isRunning = true;
         animate();
     });
@@ -343,4 +360,14 @@ function onDocumentMouseMove( event ) {
     mousePosition.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 }
 
+function setupPosprocessing(){
+    composer = new THREE.EffectComposer(renderer);
+    composer.addPass(new THREE.RenderPass(scene, camera));
+    glitchPass = new THREE.GlitchPass();
+    glitchPass.renderToScreen = true;
+    glitchPass.visible = false;
+    composer.addPass(glitchPass);
+}
+
 setupScene();
+// setupPosprocessing();

@@ -146,6 +146,7 @@ class ModelProvider {
         ship.scale.set(0.002, 0.002, 0.002);
         ship.position.set(0, 0, 0);
         ship.rotateY(Math.PI);
+        ship.children[0].material.forEach(function(material) { material.shininess = 500 });
         return ship;
     }
 }
