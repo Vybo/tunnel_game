@@ -15,7 +15,7 @@ class ModelProvider {
 
         this.allModels = {
             easyObstacles: null,
-            ships: [this.loadedShips.ship1, this.loadedShips.ship2]
+            ships: null
         };
     }
 
@@ -30,6 +30,7 @@ class ModelProvider {
         manager.onLoad = function () {
             console.log("Finished loading everything.");
             that.allModels.easyObstacles = [that.loadedObstacles.easy1, that.loadedObstacles.easy2, that.loadedObstacles.easy3, that.loadedObstacles.easy4];
+            that.allModels.ships = [that.loadedShips.ship1, that.loadedShips.ship2];
             onLoadedHandler();
         };
         manager.onProgress = function (url, itemsLoaded, itemsTotal) {
@@ -40,6 +41,42 @@ class ModelProvider {
         };
 
         let jsonLoader = new THREE.JSONLoader(manager);
+        let mtlLoader = new THREE.MTLLoader(manager);
+        let objLoader = new THREE.OBJLoader(manager);
+
+        mtlLoader.load(
+            'models/ship01.mtl',
+
+            ( materials ) => {
+                materials.preload();
+                objLoader.setMaterials(materials);
+
+                objLoader.load(
+                    'models/ship01.obj',
+
+                    ( object ) => {
+                        this.loadedShips.ship1 = object;
+                    }
+                );
+            }
+        );
+
+        mtlLoader.load(
+            'models/ship02.mtl',
+
+            ( materials ) => {
+                materials.preload();
+                objLoader.setMaterials(materials);
+
+                objLoader.load(
+                    'models/ship02.obj',
+
+                    ( object ) => {
+                        this.loadedShips.ship2 = object;
+                    }
+                );
+            }
+        );
 
         jsonLoader.load(
             'models/easy1.json',
@@ -84,6 +121,8 @@ class ModelProvider {
                 this.loadedObstacles.easy4 = object;
             }
         );
+
+
     }
 
     easyObstacle() {
