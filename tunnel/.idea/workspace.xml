@@ -27,21 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Engine.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Engine.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="401">
               <caret line="366" column="36" lean-forward="false" selection-start-line="366" selection-start-column="32" selection-end-line="366" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GlitchPass.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/game/js/postprocessing/GlitchPass.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="438">
-              <caret line="70" column="45" lean-forward="false" selection-start-line="70" selection-start-column="45" selection-end-line="70" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -334,12 +324,12 @@
       <workItem from="1511909701915" duration="1708000" />
       <workItem from="1511911542819" duration="95000" />
       <workItem from="1512075227937" duration="3334000" />
-      <workItem from="1512634248783" duration="16602000" />
+      <workItem from="1512634248783" duration="16620000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42247000" />
+    <option name="totallyTimeSpent" value="42265000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="806" y="23" width="1114" height="1057" extended-state="0" />
@@ -690,18 +680,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="366" column="36" lean-forward="false" selection-start-line="366" selection-start-column="32" selection-end-line="366" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/js/postprocessing/GlitchPass.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="438">
           <caret line="70" column="45" lean-forward="false" selection-start-line="70" selection-start-column="45" selection-end-line="70" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="401">
+          <caret line="366" column="36" lean-forward="false" selection-start-line="366" selection-start-column="32" selection-end-line="366" selection-end-column="36" />
           <folding />
         </state>
       </provider>
