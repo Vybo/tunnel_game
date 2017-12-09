@@ -70,6 +70,9 @@ function animate() {
 function adjustDifficulty() {
     difficulty += 0.01;
     if (isRunning) particleSystem1Options.velocity.z = (difficulty - 1.0) * 0.5;
+
+    tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b - 0.0001 : 0;
+    tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g - 0.0001 : 0;
 }
 
 function checkCollision() {
@@ -106,7 +109,8 @@ function reset() {
         scene.remove(object);
     });
     obstacles = [];
-
+    tubeLightsColor.b = 1;
+    tubeLightsColor.g = 1;
     isRunning = true;
 }
 

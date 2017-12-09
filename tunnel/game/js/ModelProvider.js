@@ -1,4 +1,7 @@
 class ModelProvider {
+    static flatShading () {
+        return false;
+    }
 
     constructor() {
         this.loadedObstacles = {
@@ -83,7 +86,7 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = false;
+                material.flatShading = ModelProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy1 = object;
             }
@@ -94,7 +97,7 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = false;
+                material.flatShading = ModelProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy2 = object;
             }
@@ -105,7 +108,7 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = false;
+                material.flatShading = ModelProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy3 = object;
             }
@@ -116,7 +119,7 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = false;
+                material.flatShading = ModelProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy4 = object;
             }
@@ -129,6 +132,7 @@ class ModelProvider {
         let model = this.randomObject(this.allModels.easyObstacles);
         let obstacle = model.clone();
         obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 50, specular: 0x111111 } );
+        obstacle.material.flatShading = ModelProvider.flatShading();
         let scale = 0.1 + tubeDiameter;
         obstacle.scale.set(scale, scale, scale);
         obstacle.rotation.x = Math.PI / 2;
@@ -146,7 +150,7 @@ class ModelProvider {
         ship.scale.set(0.002, 0.002, 0.002);
         ship.position.set(0, 0, 0);
         ship.rotateY(Math.PI);
-        ship.children[0].material.forEach(function(material) { material.shininess = 500 });
+        ship.children[0].material.forEach(function(material) { material.shininess = 500; material.flatShading = ModelProvider.flatShading(); });
         return ship;
     }
 }

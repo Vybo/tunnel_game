@@ -7,6 +7,7 @@ class GeometryGenerators {
 
         let geometry = new THREE.TubeGeometry(path, 1, scale, 20, false);
         let material = new THREE.MeshPhongMaterial( { color: 0x2194ce, side: THREE.BackSide, shininess: 100, specular: 0x111111 } );
+        material.flatShading = ModelProvider.flatShading();
         let mesh = new THREE.Mesh(geometry, material);
 
         return mesh;
@@ -39,6 +40,7 @@ class GeometryGenerators {
     static lightFixture() {
         let geometry = new THREE.BoxGeometry( 0.1, 0.1, 0.3 );
         let material = new THREE.MeshPhongMaterial( { color: 0xff0000, shininess: 30, specular: 0xffffff } );
+        material.flatShading = ModelProvider.flatShading();
         let cube = new THREE.Mesh( geometry, material );
 
         return cube;
