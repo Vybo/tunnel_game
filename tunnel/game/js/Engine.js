@@ -15,6 +15,7 @@ document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 var tubes = [];
 var obstacles = [];
 var lights = [];
+var obstacleRotationMultipliers = [];
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -124,15 +125,18 @@ function updatePositions() {
 }
 
 function updateRotations() {
+    // for (let i = 0; i < obstacles.length; i++) {
+    //     obstacles[i].rotation.y += obstacleRotationMultipliers[i] + (difficulty / 1000);
+    // }
 
     obstacles.forEach( function(object) {
-        object.rotation.y += 0.05;
+        object.rotation.y += object.rotationCoefficient + (difficulty / 1000);
     });
 }
 
-function updateCameraPosition() { // Refactor to updatePlayer
+const bugfixmodifier = 0.6;
 
-    let bugfixmodifier = 0.6;
+function updateCameraPosition() { // Refactor to updatePlayer
 
     camera.position.x = mousePosition.x * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
     camera.position.y = mousePosition.y * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
@@ -199,8 +203,10 @@ function regenerateObstacles() {
 
         obstacle.position.z = GeometryGenerators.randomFloat(furthestObject.position.z - 20, furthestObject.position.z - 200);
         obstacle.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
-
+        obstacle.rotationCoefficient = GeometryGenerators.randomFloat(-0.07, 0.07);
         obstacles.push(obstacle);
+        // obstacleRotationMultipliers[obstacles.indexOf(obstacle)] = GeometryGenerators.randomFloat(-0.07, 0.07);
+
         scene.add(obstacle);
     }
 }
