@@ -88,9 +88,8 @@ function checkCollision() {
 
             isRunning = false;
             particleSystem1Options.velocity.z = 0.01;
-
-            // exploder = new Exploder(collisions[0].object, scene);
-
+            let clonedObject = collisions[0].object.clone();
+            exploder = new Exploder(clonedObject, scene);
 
             console.log("Collision");
             setScreenGlitch(true);
@@ -261,6 +260,7 @@ function setLightsColor(color) {
 }
 
 function setScreenGlitch(glitched) {
+
     if (!composer) return;
 
     if (glitched) {
