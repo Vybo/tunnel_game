@@ -85,7 +85,7 @@ function checkCollision() {
             isRunning = false;
             particleSystem1Options.velocity.z = 0.01;
 
-            exploder = new Exploder(collisions[0].object, scene);
+            // exploder = new Exploder(collisions[0].object, scene);
 
 
             console.log("Collision");
@@ -197,7 +197,7 @@ function regenerateObstacles() {
             return (prev.position.z < current.position.z) ? prev : current
         }, modelProvider.easyObstacle()); // Uses default value of default generated obstacle, if none found.
 
-        obstacle.position.z = GeometryGenerators.randomFloat(furthestObject.position.z, furthestObject.position.z - 200);
+        obstacle.position.z = GeometryGenerators.randomFloat(furthestObject.position.z - 20, furthestObject.position.z - 200);
         obstacle.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
 
         obstacles.push(obstacle);
