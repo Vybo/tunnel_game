@@ -128,9 +128,6 @@ function updatePositions() {
 }
 
 function updateRotations() {
-    // for (let i = 0; i < obstacles.length; i++) {
-    //     obstacles[i].rotation.y += obstacleRotationMultipliers[i] + (difficulty / 1000);
-    // }
 
     obstacles.forEach( function(object) {
         object.rotation.y += object.rotationCoefficient + (difficulty / 1000);
@@ -158,10 +155,6 @@ function updateCameraPosition() { // Refactor to updatePlayer
         if (delta > 0) {
             let positionForShip = Helpers.particlePositionForShip("ship1", player.position);
 
-            // particleSystem1Options.position.x = Math.sin( tick * particleSystem1SpawnerOptions.horizontalSpeed ) * 20;
-            // particleSystem1Options.position.y = Math.sin( tick * particleSystem1SpawnerOptions.verticalSpeed ) * 10;
-            // particleSystem1Options.position.z = Math.sin( tick * particleSystem1SpawnerOptions.horizontalSpeed + particleSystem1SpawnerOptions.verticalSpeed ) * 5;
-
             particleSystem1Options.position.x = positionForShip.x;
             particleSystem1Options.position.y = positionForShip.y;
             particleSystem1Options.position.z = positionForShip.z;
@@ -177,12 +170,6 @@ function updateCameraPosition() { // Refactor to updatePlayer
 
 function regenerateObstacles() {
 
-    // obstacles.forEach( function(object, index, array) {
-    //     if (object.position.z > 0) {
-    //         array.splice(index, 1);
-    //         scene.remove(object);
-    //     }
-    // });
     clearObjectsBehindPlayer(obstacles, 0);
 
     let obstaclesToGenerate = maxObstaces - obstacles.length;
@@ -208,7 +195,6 @@ function regenerateObstacles() {
         obstacle.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
         obstacle.rotationCoefficient = GeometryGenerators.randomFloat(-0.07, 0.07);
         obstacles.push(obstacle);
-        // obstacleRotationMultipliers[obstacles.indexOf(obstacle)] = GeometryGenerators.randomFloat(-0.07, 0.07);
 
         scene.add(obstacle);
     }
@@ -348,19 +334,11 @@ function setupScene(){
     let light = new THREE.AmbientLight( 0x555555 );
     scene.add(light);
 
-    // var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
-    // directionalLight.position.x = -0.5;
-    // directionalLight.position.y = 0;
-    // directionalLight.position.z = 0;
-    // scene.add(directionalLight);
-
     pointLight = new THREE.SpotLight( 0xffffff, 1, 200, 0.5, 0.5, 1 );
     pointLight.position.set( 0, 0, 0 );
     pointLight.target.position.set(0, 0, -1);
     scene.add(pointLight);
     scene.add(pointLight.target);
-
-    // obstacles.push(GeometryGenerators.cube());
 
     let tube = GeometryGenerators.straightTube(tubeDiameter, 500);
     tubes.push(tube);
