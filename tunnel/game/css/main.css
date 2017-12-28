@@ -1,12 +1,96 @@
+body {
+    margin: 0;
+    font-family: 'Open Sans Condensed', sans-serif;
+    color: white;
+    line-height: 0.4;
+}
+
+canvas { width: 100%; height: 100% }
+
+.h1 {
+    margin: 0;
+}
+
+.h2 {
+    margin: 0;
+}
+
+.h3 {
+    margin: 0;
+}
+
+.h4 {
+    margin: 0;
+}
+
 .loading {
     width: 100%;
     height: 100%;
     position: absolute;
     background-color: #808c8d;
+    font-family:inherit;
 }
 
 .spinner {
     position: absolute;
     top:50%;
     left: 50%;
+}
+
+.left-item {
+    position: absolute;
+    width:20%;
+    height:10%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    font-family:inherit;
+}
+
+.right-item {
+    position: absolute;
+    width:20%;
+    height:10%;
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    font-family:inherit;
+}
+
+.left-top-5 {
+    top:5%;
+    left: 0px;
+    font-family:inherit;
+}
+
+.right-top-5 {
+    top:5%;
+    right: 0px;
+    font-family:inherit;
+}
+
+.left-bottom-5 {
+    bottom:5%;
+    left: 0px;
+    font-family:inherit;
+}
+
+.right-bottom-5 {
+    bottom:5%;
+    right: 0px;
+    font-family:inherit;
+}
+
+.heading-left {
+    margin-left: 10px;
+}
+
+.content-left {
+    margin-left: 20px;
+}
+
+.heading-right {
+    text-align: right;
+    margin-right: 10px;
+}
+
+.content-right {
+    text-align: right;
+    margin-right: 20px;
 }
