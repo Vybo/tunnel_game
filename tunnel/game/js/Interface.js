@@ -11,7 +11,12 @@ class Interface {
         this.distance = $('.distance');
         this.shield = $('.shield');
         this.brake = $('.brake');
+        this.menu = $('.menu');
+        this.startButton = $('.startButton');
+        this.highscore = $('.highscore');
+        this.currentScore = $('.currentscore');
     }
+
 
     setLoadingVisibility(visible) {
 
@@ -31,6 +36,23 @@ class Interface {
         }
     }
 
+    setMenuVisibility(visible) {
+
+            if (visible) {
+                this.menu.show();
+            } else {
+                this.menu.hide();
+            }
+    }
+
+    updateHighscore(score) {
+        this.highscore.text(score + " m");
+    }
+
+    updateCurrentScore(score) {
+        this.currentScore.text(score.toFixed(2) + " m");
+    }
+
     updateSpeed(speed) {
         this.speed.text(speed.toFixed(2) + " m/s");
     }
@@ -45,5 +67,9 @@ class Interface {
 
     udpateBrake(brake) {
         this.brake.text(brake.toFixed(0) + " %");
+    }
+
+    startButtonOnClickHandler(handler) {
+        this.startButton.click(handler);
     }
 }

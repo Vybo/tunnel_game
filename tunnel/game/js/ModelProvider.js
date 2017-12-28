@@ -18,7 +18,8 @@ class ModelProvider {
 
         this.allModels = {
             easyObstacles: null,
-            ships: null
+            ships: null,
+            shield: null
         };
     }
 
@@ -26,6 +27,9 @@ class ModelProvider {
         var that = this;
 
         let manager = new THREE.LoadingManager();
+        let manager2 = new THREE.LoadingManager();
+
+        let textureLoader = new THREE.TextureLoader(manager2);
 
         manager.onStart = function (url, itemsLoaded, itemsTotal) {
             console.log("Started loading " + url);
@@ -34,7 +38,26 @@ class ModelProvider {
             console.log("Finished loading everything.");
             that.allModels.easyObstacles = [that.loadedObstacles.easy1, that.loadedObstacles.easy2, that.loadedObstacles.easy3, that.loadedObstacles.easy4];
             that.allModels.ships = [that.loadedShips.ship1, that.loadedShips.ship2];
-            onLoadedHandler();
+
+            let shipSize = new THREE.Box3().setFromObject( that.ship() ).getSize();
+            let shieldGeometry = new THREE.SphereGeometry(shipSize.x - 0.4, shipSize.y, shipSize.z - 0.05);
+            let shieldMaterial = new THREE.MeshStandardMaterial({ color: "#3b26ee", transparent: true, side: THREE.DoubleSide, alphaTest: 0 });
+            let alphaMap = null;
+
+            textureLoader.load('textures/shield.jpg',
+
+                ( texture ) => {
+                    alphaMap = texture;
+                    shieldMaterial.alphaMap = alphaMap;
+                    shieldMaterial.alphaMap.magFilter = THREE.NearestFilter;
+                    shieldMaterial.alphaMap.wrapT = THREE.RepeatWrapping;
+                    shieldMaterial.alphaMap.repeat.y = 1;
+
+                    let shieldMesh = new THREE.Mesh(shieldGeometry, shieldMaterial);
+
+                    that.allModels.shield = shieldMesh;
+                });
+
         };
         manager.onProgress = function (url, itemsLoaded, itemsTotal) {
             console.log("Finished " + url + ". Items loaded: " + itemsLoaded + " of total: " + itemsTotal + ".");
@@ -42,6 +65,10 @@ class ModelProvider {
         manager.onError = function (url) {
             console.log("Error for " + url + "!");
         };
+        
+        manager2.onLoad = function () {
+            onLoadedHandler();
+        }
 
         let jsonLoader = new THREE.JSONLoader(manager);
         let mtlLoader = new THREE.MTLLoader(manager);
@@ -124,8 +151,6 @@ class ModelProvider {
                 this.loadedObstacles.easy4 = object;
             }
         );
-
-
     }
 
     easyObstacle() {
@@ -152,5 +177,9 @@ class ModelProvider {
         ship.rotateY(Math.PI);
         ship.children[0].material.forEach(function(material) { material.shininess = 500; material.flatShading = ModelProvider.flatShading(); });
         return ship;
+    }
+
+    shield() {
+        return this.allModels.shield;
     }
 }

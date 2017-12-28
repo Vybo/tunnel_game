@@ -10,12 +10,14 @@ var firstPerson = false;
 var cameraMovementMultiplier = 1.0;
 var tick = 0;
 
-var shield = 100;
+var shieldPower = 100;
 var brake = 100;
 var distance = 0;
 var speed = 0;
 
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+document.addEventListener( 'mousedown', onMouseDown );
+document.addEventListener( 'mouseup', onMouseUp );
 
 var tubes = [];
 var obstacles = [];
@@ -32,6 +34,7 @@ var glitchPass = null;
 
 var player = null;
 var pointLight = null;
+var shield = null;
 
 var lightsBlinkingTween = null;
 var tubeLightsColor = new THREE.Color(1, 1, 1);
@@ -48,6 +51,9 @@ var modelProvider = new ModelProvider();
 var isRunning = false;
 
 var interface = new Interface();
+var storage = new Storage();
+
+var shieldActive = false;
 
 function animate() {
 
@@ -84,7 +90,7 @@ function adjustDifficulty() {
 }
 
 function checkCollision() {
-    if (isRunning) {
+    if (isRunning && !shieldActive) {
         let caster = new THREE.Raycaster();
         let ray = new THREE.Vector3(0, 0, -(defaultSpeed * difficulty));
         let maxDistance = 1;
@@ -94,16 +100,22 @@ function checkCollision() {
 
         if (collisions.length > 0 && collisions[0].distance <= maxDistance) {
 
-            isRunning = false;
+            // isRunning = false;
+            setRunning(false);
             particleSystem1Options.velocity.z = 0.01;
 
             console.log("Collision");
             setScreenGlitch(true);
             blinkLightsRed(5, function () {
-                reset();
+                // reset();
+                setScreenGlitch(false);
             });
         }
     }
+}
+
+function updateHighscore(score) {
+    storage.setHighscore(score);
 }
 
 function reset() {
@@ -120,7 +132,8 @@ function reset() {
     tubeLightsColor.g = 1;
 
     distance = 0;
-    isRunning = true;
+    // isRunning = true;
+    setRunning(true);
 }
 
 function updatePositions() {
@@ -137,6 +150,14 @@ function updatePositions() {
 
         speed = 0.277778 * defaultSpeed * difficulty * 100;
         distance += 0.277778 * defaultSpeed * difficulty;
+
+        if (shieldActive) {
+            shieldPower -= 0.1;
+
+            if (shieldPower < 0) {
+                setShieldActive(false);
+            }
+        }
     }
 }
 
@@ -145,45 +166,72 @@ function updateRotations() {
     obstacles.forEach( function(object) {
         object.rotation.y += object.rotationCoefficient + (difficulty / 1000);
     });
+
+    if (shieldActive) {
+        shield.material.alphaMap.offset.y = tick;
+    }
 }
 
 const bugfixmodifier = 0.6;
 
 function updateCameraPosition() { // Refactor to updatePlayer
 
-    camera.position.x = mousePosition.x * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
-    camera.position.y = mousePosition.y * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
-    player.position.x = mousePosition.x * tubeDiameter * bugfixmodifier;
-    player.position.y = mousePosition.y * tubeDiameter * bugfixmodifier;
-    pointLight.position.x = mousePosition.x * tubeDiameter * bugfixmodifier;
-    pointLight.position.y = mousePosition.y * tubeDiameter * bugfixmodifier;
-    pointLight.target.position.set(pointLight.position.x, pointLight.position.y, -1);
+    if (isRunning) {
+        camera.position.x = mousePosition.x * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
+        camera.position.y = mousePosition.y * tubeDiameter * bugfixmodifier * cameraMovementMultiplier;
+        player.position.x = mousePosition.x * tubeDiameter * bugfixmodifier;
+        player.position.y = mousePosition.y * tubeDiameter * bugfixmodifier;
+        pointLight.position.x = mousePosition.x * tubeDiameter * bugfixmodifier;
+        pointLight.position.y = mousePosition.y * tubeDiameter * bugfixmodifier;
+        pointLight.target.position.set(pointLight.position.x, pointLight.position.y, -1);
 
-    if (particleSystem1) {
-        let delta = clock.getDelta() * particleSystem1SpawnerOptions.timeScale;
-        tick += delta;
+        shield.position.x = player.position.x;
+        shield.position.y = player.position.y;
 
-        if (tick < 0) tick = 0;
+        if (particleSystem1) {
+            let delta = clock.getDelta() * particleSystem1SpawnerOptions.timeScale;
+            tick += delta;
 
-        if (delta > 0) {
-            let positionForShip = Helpers.particlePositionForShip("ship1", player.position);
+            if (tick < 0) tick = 0;
 
-            particleSystem1Options.position.x = positionForShip.x;
-            particleSystem1Options.position.y = positionForShip.y;
-            particleSystem1Options.position.z = positionForShip.z;
+            if (delta > 0) {
+                let positionForShip = Helpers.particlePositionForShip("ship1", player.position);
 
-            for (var x = 0; x < particleSystem1SpawnerOptions.spawnRate * delta; x++) {
-                particleSystem1.spawnParticle(particleSystem1Options);
+                particleSystem1Options.position.x = positionForShip.x;
+                particleSystem1Options.position.y = positionForShip.y;
+                particleSystem1Options.position.z = positionForShip.z;
+
+                for (var x = 0; x < particleSystem1SpawnerOptions.spawnRate * delta; x++) {
+                    particleSystem1.spawnParticle(particleSystem1Options);
+                }
             }
         }
-
-        particleSystem1.update(tick);
     }
+
+    particleSystem1.update(tick);
 }
 
 function updateInterfaceValues() {
     interface.updateDistance(distance);
     interface.updateSpeed(speed);
+    interface.updateShield(shieldPower);
+}
+
+function updateMenuValues() {
+    interface.updateHighscore(storage.getHighscore());
+    interface.updateCurrentScore(distance);
+}
+
+function setShieldActive(active) {
+    shieldActive = active;
+
+    if (active) {
+        shield.visible = true;
+        expandShield( function() {} );
+    } else {
+        retractShield( function () { shield.visible = false; })
+    }
+
 }
 
 function regenerateObstacles() {
@@ -293,6 +341,44 @@ function blinkLightsRed(times, onFinished) {
             tubeLightsColor.g = 1.0;
             setLightsColor(tubeLightsColor);
 
+            onFinished();
+        });
+}
+
+function expandShield(onFinished) {
+    var scale = new THREE.Vector3(0.1, 0.1, 0.1);
+
+    let scaleTween = new TWEEN.Tween(scale)
+        .to(new THREE.Vector3(1, 1, 1), 500)
+        .easing(TWEEN.Easing.Quartic.InOut)
+        .onUpdate( function() {
+            shield.scale.x = scale.x;
+            shield.scale.y = scale.y;
+            shield.scale.z = scale.z;
+        })
+        .start()
+        .onComplete(function() {
+            shield.scale = new THREE.Vector3(1, 1, 1);
+
+            onFinished();
+        });
+}
+
+function retractShield(onFinished) {
+    var scale = new THREE.Vector3(1, 1, 1);
+
+    let scaleTween = new TWEEN.Tween(scale)
+        .to(new THREE.Vector3(0.1, 0.1, 0.1), 500)
+        .easing(TWEEN.Easing.Quartic.InOut)
+        .onUpdate( function() {
+            shield.scale.x = scale.x;
+            shield.scale.y = scale.y;
+            shield.scale.z = scale.z;
+        })
+        .start()
+        .onComplete(function() {
+            shield.scale = new THREE.Vector3(0.1, 0.1, 0.1);
+
             onFinished()
         });
 }
@@ -336,12 +422,36 @@ function setupPlayer() {
 
         camera.position.z = 1.5;
         cameraMovementMultiplier = 0.7;
+
+        shield = modelProvider.shield();
+        scene.add(shield);
+        setShieldActive(false);
+    }
+}
+
+function setRunning(running) {
+
+    if (running) {
+        isRunning = true;
+        interface.setIndicatorsVisibility(true);
+        interface.setMenuVisibility(false);
+    } else {
+        isRunning = false;
+        interface.setIndicatorsVisibility(false);
+        interface.setMenuVisibility(true);
+
+        if (distance > storage.getHighscore()) {
+            storage.setHighscore(distance);
+        }
+
+        updateMenuValues();
     }
 }
 
 function setupScene(){
-    interface.setIndicatorsVisibility(false);
     interface.setLoadingVisibility(true);
+    interface.setIndicatorsVisibility(false);
+    interface.setMenuVisibility(false);
 
     let light = new THREE.AmbientLight( 0x555555 );
     scene.add(light);
@@ -362,18 +472,44 @@ function setupScene(){
 
     modelProvider.loadModels( function(){
         setupPlayer();
-        //regenerateObstacles();
-        //regenerateLights();
-        isRunning = true;
+        //isRunning = true;
         animate();
-        interface.setIndicatorsVisibility(true);
+
+        interface.startButtonOnClickHandler(function() {
+            reset();
+        });
+
+        updateMenuValues();
+
         interface.setLoadingVisibility(false);
+        interface.setIndicatorsVisibility(false);
+        interface.setMenuVisibility(true);
     });
 }
 
 function onDocumentMouseMove( event ) {
     mousePosition.x = ( event.clientX / window.innerWidth ) * 2 - 1;
     mousePosition.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+}
+
+function onMouseDown ( e ) {
+    if (e.which === 1) {
+        if (isRunning) {
+            setShieldActive(true);
+        }
+    } else if (e.which === 3) {
+        /*Right Mouse*/
+    }
+}
+
+function onMouseUp ( e ) {
+    if (e.which === 1) {
+        if (isRunning) {
+            setShieldActive(false);
+        }
+    } else if (e.which === 3) {
+        /*Right Mouse*/
+    }
 }
 
 function setupPosprocessing(){
