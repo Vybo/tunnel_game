@@ -10,6 +10,11 @@ var firstPerson = false;
 var cameraMovementMultiplier = 1.0;
 var tick = 0;
 
+var shield = 100;
+var brake = 100;
+var distance = 0;
+var speed = 0;
+
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
 var tubes = [];
@@ -66,6 +71,8 @@ function animate() {
     } else {
         renderer.render(scene, camera);
     }
+
+    updateInterfaceValues();
 }
 
 function adjustDifficulty() {
@@ -103,12 +110,16 @@ function reset() {
     setScreenGlitch(false);
     difficulty = 1.0;
     particleSystem1Options.velocity.z = 1;
+
     obstacles.forEach(function(object) {
         scene.remove(object);
     });
+
     obstacles = [];
     tubeLightsColor.b = 1;
     tubeLightsColor.g = 1;
+
+    distance = 0;
     isRunning = true;
 }
 
@@ -123,6 +134,9 @@ function updatePositions() {
         lights.forEach(function (object) {
             object.position.z += defaultSpeed * difficulty;
         });
+
+        speed = 0.277778 * defaultSpeed * difficulty * 100;
+        distance += 0.277778 * defaultSpeed * difficulty;
     }
 }
 
@@ -165,6 +179,11 @@ function updateCameraPosition() { // Refactor to updatePlayer
 
         particleSystem1.update(tick);
     }
+}
+
+function updateInterfaceValues() {
+    interface.updateDistance(distance);
+    interface.updateSpeed(speed);
 }
 
 function regenerateObstacles() {
@@ -321,6 +340,8 @@ function setupPlayer() {
 }
 
 function setupScene(){
+    interface.setIndicatorsVisibility(false);
+    interface.setLoadingVisibility(true);
 
     let light = new THREE.AmbientLight( 0x555555 );
     scene.add(light);
@@ -345,6 +366,7 @@ function setupScene(){
         //regenerateLights();
         isRunning = true;
         animate();
+        interface.setIndicatorsVisibility(true);
         interface.setLoadingVisibility(false);
     });
 }
