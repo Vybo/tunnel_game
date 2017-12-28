@@ -55,8 +55,8 @@
       <file leaf-file-name="Engine.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="759">
-              <caret line="391" column="12" lean-forward="true" selection-start-line="391" selection-start-column="12" selection-end-line="391" selection-end-column="12" />
+            <state relative-caret-position="510">
+              <caret line="290" column="42" lean-forward="false" selection-start-line="290" selection-start-column="42" selection-end-line="290" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -99,10 +99,10 @@
       <file leaf-file-name="ModelProvider.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/js/ModelProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="596">
-              <caret line="46" column="53" lean-forward="true" selection-start-line="46" selection-start-column="53" selection-end-line="46" selection-end-column="53" />
+            <state relative-caret-position="549">
+              <caret line="42" column="53" lean-forward="false" selection-start-line="42" selection-start-column="53" selection-end-line="42" selection-end-column="53" />
               <folding>
-                <marker date="1514482454000" expanded="true" signature="20:22" ph="{...}" />
+                <marker date="1514484098000" expanded="true" signature="20:22" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -121,9 +121,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>background-color: #333;</find>
-      <find>exploder</find>
-      <find>transi</find>
       <find>setups</find>
       <find>left</find>
       <find>reset</find>
@@ -151,6 +148,9 @@
       <find>&lt; 1</find>
       <find>tween</find>
       <find>setshield</find>
+      <find>expandshie</find>
+      <find>shin</find>
+      <find>lights</find>
     </findStrings>
     <replaceStrings>
       <replace>right</replace>
@@ -414,12 +414,12 @@
       <workItem from="1512852472090" duration="643000" />
       <workItem from="1514465079806" duration="1652000" />
       <workItem from="1514468045196" duration="513000" />
-      <workItem from="1514469470898" duration="14030000" />
+      <workItem from="1514469470898" duration="14749000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67805000" />
+    <option name="totallyTimeSpent" value="68524000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1097" y="23" width="1463" height="1417" extended-state="0" />
@@ -433,7 +433,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43418014" sideWeight="0.49750888" order="3" side_tool="false" content_ui="tabs" x="683" y="449" width="619" height="432" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43418014" sideWeight="0.49750888" order="3" side_tool="false" content_ui="tabs" x="683" y="449" width="619" height="432" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -469,7 +469,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="103" />
+      <option name="time" value="108" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -495,7 +495,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="114" lean-forward="false" selection-start-line="36" selection-start-column="114" selection-end-line="36" selection-end-column="114" />
           <folding>
-            <marker date="1514482454000" expanded="true" signature="20:22" ph="{...}" />
+            <marker date="1514484098000" expanded="true" signature="20:22" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -533,7 +533,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="41" lean-forward="false" selection-start-line="36" selection-start-column="41" selection-end-line="36" selection-end-column="41" />
           <folding>
-            <marker date="1514482454000" expanded="true" signature="20:22" ph="{...}" />
+            <marker date="1514484098000" expanded="true" signature="20:22" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -775,18 +775,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game/js/ModelProvider.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="596">
-          <caret line="46" column="53" lean-forward="true" selection-start-line="46" selection-start-column="53" selection-end-line="46" selection-end-column="53" />
+        <state relative-caret-position="549">
+          <caret line="42" column="53" lean-forward="false" selection-start-line="42" selection-start-column="53" selection-end-line="42" selection-end-column="53" />
           <folding>
-            <marker date="1514482454000" expanded="true" signature="20:22" ph="{...}" />
+            <marker date="1514484098000" expanded="true" signature="20:22" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="759">
-          <caret line="391" column="12" lean-forward="true" selection-start-line="391" selection-start-column="12" selection-end-line="391" selection-end-column="12" />
+        <state relative-caret-position="510">
+          <caret line="290" column="42" lean-forward="false" selection-start-line="290" selection-start-column="42" selection-end-line="290" selection-end-column="42" />
           <folding />
         </state>
       </provider>

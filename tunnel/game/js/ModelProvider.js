@@ -41,7 +41,7 @@ class ModelProvider {
 
             let shipSize = new THREE.Box3().setFromObject( that.ship() ).getSize();
             let shieldGeometry = new THREE.SphereGeometry(shipSize.x - 0.4, shipSize.y, shipSize.z - 0.05);
-            let shieldMaterial = new THREE.MeshStandardMaterial({ color: "#3b26ee", transparent: true, side: THREE.DoubleSide, alphaTest: 0 });
+            let shieldMaterial = new THREE.MeshStandardMaterial({ color: "#5c77ff", transparent: true, side: THREE.DoubleSide, alphaTest: 0, shininess: 300, specular: 0x111111 });
             let alphaMap = null;
 
             textureLoader.load('textures/shield.jpg',

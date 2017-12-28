@@ -281,13 +281,14 @@ function regenerateLights() {
     let lightsToGenerate = maxLights - lights.length;
     let sphere = new THREE.SphereGeometry( 0.3, 8, 6 );
     let diameterletoff = 0.3;
-    for (i = 0; i < lightsToGenerate / 4; i++) {
+    for (i = 0; i <= lightsToGenerate; i++) {
 
         let light1 = new THREE.PointLight( tubeLightsColor, 0.3, 30 );
         light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: tubeLightsColor } ) ) );
         light1.position.x = Math.cos(90) * (tubeDiameter- diameterletoff);
         light1.position.y = Math.sin(90) * (tubeDiameter- diameterletoff);
         light1.position.z = furthestDistance - lightsSpacing;
+        furthestDistance += lightsSpacing;
         lights.push(light1);
         scene.add(light1);
     }
