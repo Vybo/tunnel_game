@@ -284,7 +284,7 @@ function adjustAudioPlaybackSpeed(modifier) {
 
     impactSound.setPlaybackRate(1.0 - modifier / 100);
 
-    adjustEngineSoundSpeed(0.5 + modifier);
+    adjustEngineSoundSpeed(0.5 + modifier * 5);
 
     obstacles.forEach( function(obstacle) {
         if (obstacle.children.length > 0) {
@@ -547,7 +547,7 @@ function setupScene(){
 
             let impactS = new THREE.Audio(cameraAudioListener);
             impactS.setBuffer(environmentProvider.impactSound());
-            impactS.setVolume(1);
+            impactS.setVolume(0.6);
             impactSound = impactS;
 
             engineSound = new THREE.PositionalAudio(cameraAudioListener);
