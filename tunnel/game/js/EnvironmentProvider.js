@@ -1,4 +1,4 @@
-class ModelProvider {
+class EnvironmentProvider {
     static flatShading () {
         return false;
     }
@@ -20,6 +20,12 @@ class ModelProvider {
             easyObstacles: null,
             ships: null,
             shield: null
+        };
+
+        this.allSounds = {
+            engine: null,
+            flyby: null,
+            impact: null
         };
     }
 
@@ -73,6 +79,7 @@ class ModelProvider {
         let jsonLoader = new THREE.JSONLoader(manager);
         let mtlLoader = new THREE.MTLLoader(manager);
         let objLoader = new THREE.OBJLoader(manager);
+        let audioLoader = new THREE.AudioLoader(manager);
 
         mtlLoader.load(
             'models/ship01.mtl',
@@ -113,7 +120,7 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = ModelProvider.flatShading();
+                material.flatShading = EnvironmentProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy1 = object;
             }
@@ -124,7 +131,7 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = ModelProvider.flatShading();
+                material.flatShading = EnvironmentProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy2 = object;
             }
@@ -135,7 +142,7 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = ModelProvider.flatShading();
+                material.flatShading = EnvironmentProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy3 = object;
             }
@@ -146,9 +153,33 @@ class ModelProvider {
 
             ( geometry ) => {
                 let material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 300, specular: 0x111111 } );
-                material.flatShading = ModelProvider.flatShading();
+                material.flatShading = EnvironmentProvider.flatShading();
                 let object = new THREE.Mesh( geometry, material );
                 this.loadedObstacles.easy4 = object;
+            }
+        );
+
+        audioLoader.load(
+            'sounds/engine.ogg',
+
+            ( buffer ) => {
+                this.allSounds.engine = buffer;
+            }
+        );
+
+        audioLoader.load(
+            'sounds/flyby.aiff',
+
+            ( buffer ) => {
+                this.allSounds.flyby = buffer;
+            }
+        );
+
+        audioLoader.load(
+            'sounds/impact.wav',
+
+            ( buffer ) => {
+                this.allSounds.impact = buffer;
             }
         );
     }
@@ -157,7 +188,7 @@ class ModelProvider {
         let model = this.randomObject(this.allModels.easyObstacles);
         let obstacle = model.clone();
         obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 50, specular: 0x111111 } );
-        obstacle.material.flatShading = ModelProvider.flatShading();
+        obstacle.material.flatShading = EnvironmentProvider.flatShading();
         let scale = 0.1 + tubeDiameter;
         obstacle.scale.set(scale, scale, scale);
         obstacle.rotation.x = Math.PI / 2;
@@ -175,7 +206,7 @@ class ModelProvider {
         ship.scale.set(0.002, 0.002, 0.002);
         ship.position.set(0, 0, 0);
         ship.rotateY(Math.PI);
-        ship.children[0].material.forEach(function(material) { material.shininess = 500; material.flatShading = ModelProvider.flatShading(); });
+        ship.children[0].material.forEach(function(material) { material.shininess = 500; material.flatShading = EnvironmentProvider.flatShading(); });
         return ship;
     }
 

@@ -46,7 +46,7 @@ var particleSystem1SpawnerOptions = null;
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-var modelProvider = new ModelProvider();
+var environmentProvider = new EnvironmentProvider();
 
 var isRunning = false;
 
@@ -251,11 +251,11 @@ function regenerateObstacles() {
         // obstacles.push(cube);
         // scene.add(cube);
 
-        let obstacle = modelProvider.easyObstacle();
+        let obstacle = environmentProvider.easyObstacle();
 
         let furthestObject = obstacles.reduce(function(prev, current) {
             return (prev.position.z < current.position.z) ? prev : current
-        }, modelProvider.easyObstacle()); // Uses default value of default generated obstacle, if none found.
+        }, environmentProvider.easyObstacle()); // Uses default value of default generated obstacle, if none found.
 
         obstacle.position.z = GeometryGenerators.randomFloat(furthestObject.position.z - 20, furthestObject.position.z - 200);
         obstacle.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
@@ -392,7 +392,7 @@ function setupPlayer() {
 
     } else {
 
-        player = modelProvider.ship();
+        player = environmentProvider.ship();
         scene.add(player);
 
         particleSystem1 = new THREE.GPUParticleSystem( {
@@ -424,7 +424,7 @@ function setupPlayer() {
         camera.position.z = 1.5;
         cameraMovementMultiplier = 0.7;
 
-        shield = modelProvider.shield();
+        shield = environmentProvider.shield();
         scene.add(shield);
         setShieldActive(false);
     }
@@ -471,7 +471,7 @@ function setupScene(){
         scene.add(tube);
     });
 
-    modelProvider.loadModels( function(){
+    environmentProvider.loadModels( function(){
         setupPlayer();
         //isRunning = true;
         animate();

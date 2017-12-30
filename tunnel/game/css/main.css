@@ -102,9 +102,9 @@ h1 {
 .menu {
     position: absolute;
     width:90%;
-    height:40%;
+    height:50%;
     left:5%;
-    top:30%;
+    top:20%;
     background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
     text-align: center;
 }
@@ -113,8 +113,7 @@ h1 {
     display:block;
     align-items:center;
     width:90%;
-    height:40%;
-    margin-top:10%;
+    height:50%;
 }
 
 button {
