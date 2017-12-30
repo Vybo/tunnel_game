@@ -43,6 +43,8 @@ var particleSystem1 = null;
 var particleSystem1Options = null;
 var particleSystem1SpawnerOptions = null;
 
+var cameraAudioListener = null;
+
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
@@ -54,6 +56,9 @@ var interface = new Interface();
 var storage = new Storage();
 
 var shieldActive = false;
+
+var impactSound = null;
+var engineSound = null;
 
 function animate() {
 
@@ -87,6 +92,8 @@ function adjustDifficulty() {
 
     tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b - 0.0001 : 0;
     tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g - 0.0001 : 0;
+
+    adjustAudioPlaybackSpeed(difficulty / 10);
 }
 
 function checkCollision() {
@@ -105,6 +112,7 @@ function checkCollision() {
             particleSystem1Options.velocity.z = 0.01;
 
             console.log("Collision");
+            impactSound.play();
             setScreenGlitch(true);
             blinkLightsRed(5, function () {
                 // reset();
@@ -236,7 +244,7 @@ function setShieldActive(active) {
 
 function regenerateObstacles() {
 
-    clearObjectsBehindPlayer(obstacles, 0);
+    clearObjectsBehindPlayer(obstacles, 0, true);
 
     let obstaclesToGenerate = maxObstaces - obstacles.length;
 
@@ -260,17 +268,37 @@ function regenerateObstacles() {
         obstacle.position.z = GeometryGenerators.randomFloat(furthestObject.position.z - 20, furthestObject.position.z - 200);
         obstacle.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
         obstacle.rotationCoefficient = GeometryGenerators.randomFloat(-0.07, 0.07);
+
+        let obstacleSound = new THREE.PositionalAudio(cameraAudioListener);
+        obstacleSound.setBuffer(environmentProvider.flybySound());
+        obstacleSound.setVolume(0.8);
+        obstacle.add(obstacleSound);
+
         obstacles.push(obstacle);
 
         scene.add(obstacle);
     }
 }
 
+function adjustAudioPlaybackSpeed(modifier) {
+
+    impactSound.setPlaybackRate(1.0 - modifier / 100);
+
+    adjustEngineSoundSpeed(0.5 + modifier);
+
+    obstacles.forEach( function(obstacle) {
+        if (obstacle.children.length > 0) {
+            let sound = obstacle.children[0];
+            sound.setPlaybackRate(2.0 + modifier);
+        }
+    });
+}
+
 const empty = new THREE.Object3D();
 
 function regenerateLights() {
 
-    clearObjectsBehindPlayer(lights, lightsSpacing * 5);
+    clearObjectsBehindPlayer(lights, lightsSpacing * 5, false);
 
     let furthestObject = lights.reduce(function(prev, current) {
         return (prev.position.z < current.position.z) ? prev : current
@@ -294,11 +322,17 @@ function regenerateLights() {
     }
 }
 
-function clearObjectsBehindPlayer(array, tolerance) {
+function clearObjectsBehindPlayer(array, tolerance, playSound) {
 
     array.forEach( function(object, index, array) {
         if (object.position.z > tolerance) {
             array.splice(index, 1);
+
+            if (playSound && object.children.length > 0) {
+                let audio = object.children[0];
+                audio.play();
+            }
+
             scene.remove(object);
         }
     });
@@ -384,6 +418,32 @@ function retractShield(onFinished) {
         });
 }
 
+function adjustEngineSoundSpeed(desiredRate, onComplete) {
+
+    let currentRate = engineSound.playbackRate;
+
+    // engineSound.stop();
+
+    engineSound.setPlaybackRate(desiredRate);
+
+    // engineSound.play();
+    //
+    // let engineSoundTween = new TWEEN.Tween(currentRate)
+    //     .to(desiredRate, 500)
+    //     .easing(TWEEN.Easing.Quartic.InOut)
+    //     .onUpdate( function() {
+    //         engineSound.setPlaybackRate(currentRate)
+    //     })
+    //     .start()
+    //     .onComplete(function () {
+    //         if (onComplete === undefined) {
+    //             return;
+    //         } else {
+    //             onComplete();
+    //         }
+    //     });
+}
+
 function setupPlayer() {
 
     if (firstPerson) {
@@ -423,11 +483,14 @@ function setupPlayer() {
 
         camera.position.z = 1.5;
         cameraMovementMultiplier = 0.7;
-
-        shield = environmentProvider.shield();
-        scene.add(shield);
-        setShieldActive(false);
     }
+
+    shield = environmentProvider.shield();
+    scene.add(shield);
+    setShieldActive(false);
+
+    cameraAudioListener = new THREE.AudioListener();
+    camera.add(cameraAudioListener);
 }
 
 function setRunning(running) {
@@ -436,6 +499,8 @@ function setRunning(running) {
         isRunning = true;
         interface.setIndicatorsVisibility(true);
         interface.setMenuVisibility(false);
+        engineSound.play();
+
     } else {
         isRunning = false;
         interface.setIndicatorsVisibility(false);
@@ -444,6 +509,9 @@ function setRunning(running) {
         if (distance > storage.getHighscore()) {
             storage.setHighscore(distance);
         }
+
+        adjustEngineSoundSpeed(0.3);
+        engineSound.stop();
 
         updateMenuValues();
     }
@@ -472,19 +540,34 @@ function setupScene(){
     });
 
     environmentProvider.loadModels( function(){
-        setupPlayer();
-        //isRunning = true;
-        animate();
 
-        interface.startButtonOnClickHandler(function() {
-            reset();
+        environmentProvider.loadSounds( function () {
+
+            setupPlayer();
+
+            let impactS = new THREE.Audio(cameraAudioListener);
+            impactS.setBuffer(environmentProvider.impactSound());
+            impactS.setVolume(1);
+            impactSound = impactS;
+
+            engineSound = new THREE.PositionalAudio(cameraAudioListener);
+            engineSound.setBuffer(environmentProvider.engineSound());
+            engineSound.setVolume(0.4);
+            engineSound.setLoop(true);
+            player.add(engineSound);
+
+            animate();
+
+            interface.startButtonOnClickHandler(function() {
+                reset();
+            });
+
+            updateMenuValues();
+
+            interface.setLoadingVisibility(false);
+            interface.setIndicatorsVisibility(false);
+            interface.setMenuVisibility(true);
         });
-
-        updateMenuValues();
-
-        interface.setLoadingVisibility(false);
-        interface.setIndicatorsVisibility(false);
-        interface.setMenuVisibility(true);
     });
 }
 

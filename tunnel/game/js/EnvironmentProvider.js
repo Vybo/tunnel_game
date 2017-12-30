@@ -79,7 +79,6 @@ class EnvironmentProvider {
         let jsonLoader = new THREE.JSONLoader(manager);
         let mtlLoader = new THREE.MTLLoader(manager);
         let objLoader = new THREE.OBJLoader(manager);
-        let audioLoader = new THREE.AudioLoader(manager);
 
         mtlLoader.load(
             'models/ship01.mtl',
@@ -158,29 +157,55 @@ class EnvironmentProvider {
                 this.loadedObstacles.easy4 = object;
             }
         );
+    }
+
+    loadSounds(onLoadedHandler) {
+
+        let that = this;
+
+        let audioLoader = new THREE.AudioLoader();
+
+        let audioErrorFunction = function(err) {
+            console.log(err);
+        };
 
         audioLoader.load(
-            'sounds/engine.ogg',
+            'sounds/engine.mp3',
 
-            ( buffer ) => {
-                this.allSounds.engine = buffer;
-            }
-        );
+            function ( buffer ) {
 
-        audioLoader.load(
-            'sounds/flyby.aiff',
+                that.allSounds.engine = buffer;
+                console.log("Engine sound");
 
-            ( buffer ) => {
-                this.allSounds.flyby = buffer;
-            }
-        );
+                audioLoader.load(
+                    'sounds/flyby.mp3',
 
-        audioLoader.load(
-            'sounds/impact.wav',
+                    function ( buffer2 ) {
 
-            ( buffer ) => {
-                this.allSounds.impact = buffer;
-            }
+                        that.allSounds.flyby = buffer2;
+                        console.log("Flyby sound");
+
+                        audioLoader.load(
+                            'sounds/impact.mp3',
+
+                            function ( buffer3 ) {
+
+                                that.allSounds.impact = buffer3;
+                                console.log("Impact sound");
+
+                                onLoadedHandler();
+                            },
+                            null,
+                            audioErrorFunction
+                        );
+
+                    },
+                    null,
+                    audioErrorFunction
+                );
+            },
+            null,
+            audioErrorFunction
         );
     }
 
@@ -212,5 +237,17 @@ class EnvironmentProvider {
 
     shield() {
         return this.allModels.shield;
+    }
+
+    flybySound() {
+        return this.allSounds.flyby;
+    }
+
+    engineSound() {
+        return this.allSounds.engine;
+    }
+
+    impactSound() {
+        return this.allSounds.impact;
     }
 }
