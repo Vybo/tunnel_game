@@ -20,6 +20,7 @@ document.addEventListener( 'mousedown', onMouseDown );
 document.addEventListener( 'mouseup', onMouseUp );
 
 var tubes = [];
+var mainTube = null;
 var obstacles = [];
 var lights = [];
 var obstacleRotationMultipliers = [];
@@ -166,6 +167,8 @@ function updatePositions() {
                 setShieldActive(false);
             }
         }
+
+        mainTube.material.map.offset.x -= (defaultSpeed * difficulty) / 10;
     }
 }
 
@@ -420,28 +423,7 @@ function retractShield(onFinished) {
 
 function adjustEngineSoundSpeed(desiredRate, onComplete) {
 
-    let currentRate = engineSound.playbackRate;
-
-    // engineSound.stop();
-
     engineSound.setPlaybackRate(desiredRate);
-
-    // engineSound.play();
-    //
-    // let engineSoundTween = new TWEEN.Tween(currentRate)
-    //     .to(desiredRate, 500)
-    //     .easing(TWEEN.Easing.Quartic.InOut)
-    //     .onUpdate( function() {
-    //         engineSound.setPlaybackRate(currentRate)
-    //     })
-    //     .start()
-    //     .onComplete(function () {
-    //         if (onComplete === undefined) {
-    //             return;
-    //         } else {
-    //             onComplete();
-    //         }
-    //     });
 }
 
 function setupPlayer() {
@@ -539,11 +521,17 @@ function setupScene(){
         scene.add(tube);
     });
 
+    if (tubes.length > 0) {
+        mainTube = tubes[0];
+    }
+
     environmentProvider.loadModels( function(){
 
         environmentProvider.loadSounds( function () {
 
             setupPlayer();
+
+            environmentProvider.texturedTube(tube, environmentProvider.loadedTextures.brick);
 
             let impactS = new THREE.Audio(cameraAudioListener);
             impactS.setBuffer(environmentProvider.impactSound());

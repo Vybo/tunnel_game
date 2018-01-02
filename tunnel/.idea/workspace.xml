@@ -48,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Engine.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Engine.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="444">
-              <caret line="549" column="33" lean-forward="false" selection-start-line="549" selection-start-column="33" selection-end-line="549" selection-end-column="33" />
+            <state relative-caret-position="1181">
+              <caret line="506" column="43" lean-forward="false" selection-start-line="506" selection-start-column="43" selection-end-line="506" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -92,13 +92,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EnvironmentProvider.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="EnvironmentProvider.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="195" column="32" lean-forward="false" selection-start-line="195" selection-start-column="32" selection-end-line="195" selection-end-column="32" />
+            <state relative-caret-position="309">
+              <caret line="154" column="8" lean-forward="false" selection-start-line="154" selection-start-column="8" selection-end-line="203" selection-end-column="13" />
               <folding>
-                <marker date="1514659920000" expanded="true" signature="26:28" ph="{...}" />
+                <marker date="1514919459000" expanded="true" signature="26:28" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -107,8 +107,8 @@
       <file leaf-file-name="three.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/js/three.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="36976" column="8" lean-forward="false" selection-start-line="36976" selection-start-column="8" selection-end-line="36976" selection-end-column="8" />
+            <state relative-caret-position="15">
+              <caret line="29578" column="0" lean-forward="false" selection-start-line="29578" selection-start-column="0" selection-end-line="29578" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -127,25 +127,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&lt; 1</find>
-      <find>tween</find>
-      <find>setshield</find>
-      <find>expandshie</find>
-      <find>shin</find>
-      <find>lights</find>
-      <find>environment</find>
-      <find>setup</find>
-      <find>obstacles</find>
-      <find>clearObjectsBehindPlayer</find>
-      <find>regenera</find>
-      <find>impact</find>
-      <find>collision</find>
-      <find>impactsound</find>
-      <find>impactsound.pla</find>
-      <find>tube</find>
-      <find>difficulty</find>
       <find>setbuffer</find>
-      <find>update</find>
       <find>setrun</find>
       <find>setuppla</find>
       <find>this.allsounds.eng</find>
@@ -157,6 +139,24 @@
       <find>sound</find>
       <find>enginesound</find>
       <find>adjustEngineSoundSpeed</find>
+      <find>tube</find>
+      <find>regeneratelights</find>
+      <find>snow</find>
+      <find>shield</find>
+      <find>tubes.for</find>
+      <find>update</find>
+      <find>updatepositio</find>
+      <find>tubes</find>
+      <find>function(tube</find>
+      <find>tube =</find>
+      <find>updateposi</find>
+      <find>animate</find>
+      <find>offset.</find>
+      <find>maintube</find>
+      <find>texture</find>
+      <find>ship</find>
+      <find>metal</find>
+      <find>ship1</find>
     </findStrings>
     <replaceStrings>
       <replace>right</replace>
@@ -182,8 +182,8 @@
         <option value="$PROJECT_DIR$/game/index.html" />
         <option value="$PROJECT_DIR$/game/css/main.css" />
         <option value="chrome-extension://bmnlcjabgnpnenekpadlanbbkooimhnj/h1.js" />
-        <option value="$PROJECT_DIR$/game/js/EnvironmentProvider.js" />
         <option value="$PROJECT_DIR$/game/js/Engine.js" />
+        <option value="$PROJECT_DIR$/game/js/EnvironmentProvider.js" />
       </list>
     </option>
   </component>
@@ -222,6 +222,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -252,7 +253,43 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="textures" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tunnel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tunnel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="sounds" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tunnel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tunnel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="game" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="models" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -304,7 +341,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -443,18 +479,19 @@
       <workItem from="1514469470898" duration="15014000" />
       <workItem from="1514485015727" duration="240000" />
       <workItem from="1514647446756" duration="6984000" />
-      <workItem from="1514656733068" duration="3772000" />
+      <workItem from="1514656733068" duration="3836000" />
+      <workItem from="1514913746188" duration="5679000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79785000" />
+    <option name="totallyTimeSpent" value="85528000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1097" y="23" width="1463" height="1417" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20110957" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20041609" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.353562" sideWeight="0.5024911" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -498,7 +535,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="150" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/game/js/EnvironmentProvider.js</url>
+          <line>329</line>
+          <properties />
+          <option name="timeStamp" value="158" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="159" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -524,7 +569,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="114" lean-forward="false" selection-start-line="36" selection-start-column="114" selection-end-line="36" selection-end-column="114" />
           <folding>
-            <marker date="1514659920000" expanded="true" signature="26:28" ph="{...}" />
+            <marker date="1514919459000" expanded="true" signature="26:28" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -558,7 +603,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="41" lean-forward="false" selection-start-line="36" selection-start-column="41" selection-end-line="36" selection-end-column="41" />
           <folding>
-            <marker date="1514659920000" expanded="true" signature="26:28" ph="{...}" />
+            <marker date="1514919459000" expanded="true" signature="26:28" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -738,6 +783,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/three.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="29578" column="0" lean-forward="false" selection-start-line="29578" selection-start-column="0" selection-end-line="29578" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/game/js/Storage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
@@ -756,29 +809,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="195" column="32" lean-forward="false" selection-start-line="195" selection-start-column="32" selection-end-line="195" selection-end-column="32" />
-          <folding>
-            <marker date="1514659920000" expanded="true" signature="26:28" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/three.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="36976" column="8" lean-forward="false" selection-start-line="36976" selection-start-column="8" selection-end-line="36976" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="549" column="33" lean-forward="false" selection-start-line="549" selection-start-column="33" selection-end-line="549" selection-end-column="33" />
+        <state relative-caret-position="1181">
+          <caret line="506" column="43" lean-forward="false" selection-start-line="506" selection-start-column="43" selection-end-line="506" selection-end-column="43" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="154" column="8" lean-forward="false" selection-start-line="154" selection-start-column="8" selection-end-line="203" selection-end-column="13" />
+          <folding>
+            <marker date="1514919459000" expanded="true" signature="26:28" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
