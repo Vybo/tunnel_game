@@ -19,7 +19,9 @@ class EnvironmentProvider {
         this.allModels = {
             easyObstacles: null,
             ships: null,
-            shield: null
+            shield: null,
+            shieldBonus: null,
+            starBonus: null
         };
 
         this.allSounds = {
@@ -109,6 +111,40 @@ class EnvironmentProvider {
 
                     ( object ) => {
                         this.loadedShips.ship2 = object;
+                    }
+                );
+            }
+        );
+
+        mtlLoader.load(
+            'models/star.mtl',
+
+            ( materials ) => {
+                materials.preload();
+                objLoader.setMaterials(materials);
+
+                objLoader.load(
+                    'models/star.obj',
+
+                    ( object ) => {
+                        this.allModels.starBonus = object;
+                    }
+                );
+            }
+        );
+
+        mtlLoader.load(
+            'models/shield.mtl',
+
+            ( materials ) => {
+                materials.preload();
+                objLoader.setMaterials(materials);
+
+                objLoader.load(
+                    'models/shield.obj',
+
+                    ( object ) => {
+                        this.allModels.shieldBonus = object;
                     }
                 );
             }
@@ -233,6 +269,16 @@ class EnvironmentProvider {
         ship.rotateY(Math.PI);
         ship.children[0].material.forEach(function(material) { material.shininess = 500; material.flatShading = EnvironmentProvider.flatShading(); });
         return ship;
+    }
+
+    shieldBonus() {
+        let model = this.allModels.shieldBonus.clone();
+        return model;
+    }
+
+    starBonus() {
+        let model = this.allModels.starBonus.clone();
+        return model;
     }
 
     shield() {
