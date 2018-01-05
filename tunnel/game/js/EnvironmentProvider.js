@@ -339,8 +339,8 @@ class EnvironmentProvider {
         // obstacle.material.map.repeat.set(1, 1);
 
         let params = {
-            minScale: 2,
-            maxScale: 4,
+            minScale: scale,
+            maxScale: 2*scale,
             rotate: true
         };
 
@@ -355,9 +355,17 @@ class EnvironmentProvider {
             color: GeometryGenerators.randomColor()
         } );
 
-        let splatteredObstacle = new THREE.Mesh( new THREE.DecalGeometry( mesh, position, orientation, size ), material );
+        let randomScale = params.minScale + Math.random() * ( params.maxScale - params.minScale );
+        let position = new THREE.Vector3(0,0,0);
+        let orientation = new THREE.Vector3(0,0,0);
+        let size = new THREE.Vector3(randomScale, randomScale, randomScale);
 
-        return obstacle;
+        let splatteredObstacle = new THREE.Mesh( new THREE.DecalGeometry( obstacle, position, orientation, size ), decalMaterial );
+        splatteredObstacle.rotation.x = Math.PI / 2;
+        splatteredObstacle.rotation.y += GeometryGenerators.randomFloat(0, Math.PI / 2);
+        splatteredObstacle.scale.set(scale, scale, scale);
+
+        return splatteredObstacle;
     }
 
     randomObject(array) {
