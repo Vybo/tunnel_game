@@ -35,7 +35,9 @@ class EnvironmentProvider {
             concrete: null,
             nebula: null,
             snow: null,
-            brick: null
+            brick: null,
+            polys: null,
+            splatter4: null
         }
     }
 
@@ -100,6 +102,20 @@ class EnvironmentProvider {
                 ( texture ) => {
 
                     that.loadedTextures.brick = texture;
+            });
+
+            textureLoader.load('textures/polys.jpg',
+
+                ( texture ) => {
+
+                    that.loadedTextures.polys = texture;
+            });
+
+            textureLoader.load('textures/paint-splatter-4.png',
+
+                ( texture ) => {
+
+                    that.loadedTextures.splatter4 = texture;
                 });
 
         };
@@ -301,19 +317,46 @@ class EnvironmentProvider {
     easyObstacle() {
         let model = this.randomObject(this.allModels.easyObstacles);
         let obstacle = model.clone();
-        obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 50, specular: 0x111111 } );
-        // obstacle.material.flatShading = EnvironmentProvider.flatShading();
-        //
-        // obstacle.material.map = this.loadedTextures.metal.clone();
-        // obstacle.material.map.wrapS = THREE.RepeatWrapping;
-        // obstacle.material.map.wrapT = THREE.RepeatWrapping;
-        // obstacle.material.map.repeat.set(20, 3);
 
         let scale = 0.1 + tubeDiameter;
         obstacle.scale.set(scale, scale, scale);
         obstacle.rotation.x = Math.PI / 2;
         obstacle.rotation.y += GeometryGenerators.randomFloat(0, Math.PI / 2);
         obstacle.position.z = -1; // Default distance when generated, used by reduce function in engine.
+
+        // obstacle.material = new THREE.MeshBasicMaterial({
+        //     side: THREE.FrontSide,
+        //     map: this.loadedTextures.brick.clone()
+        // });
+
+        obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 50, specular: 0x111111 } );
+
+        // obstacle.material.flatShading = EnvironmentProvider.flatShading();
+        //
+        // // obstacle.material.map = this.loadedTextures.brick.clone();
+        // obstacle.material.map.wrapS = THREE.ClampToEdgeWrapping;
+        // // obstacle.material.map.wrapT = THREE.ClampToEdgeWrapping;
+        // obstacle.material.map.repeat.set(1, 1);
+
+        let params = {
+            minScale: 2,
+            maxScale: 4,
+            rotate: true
+        };
+
+        let decalMaterial = new THREE.MeshPhongMaterial( {
+            specular: 0x444444,
+            map: this.loadedTextures.splatter4,
+            shininess: 30,
+            transparent: true,
+            depthTest: true,
+            depthWrite: false,
+            wireframe: false,
+            color: GeometryGenerators.randomColor()
+        } );
+
+        let splatteredObstacle = new THREE.Mesh( new THREE.DecalGeometry( mesh, position, orientation, size ), material );
+
         return obstacle;
     }
 
@@ -370,7 +413,7 @@ class EnvironmentProvider {
 
         newMaterial.map.wrapS = THREE.RepeatWrapping;
         newMaterial.map.wrapT = THREE.RepeatWrapping;
-        newMaterial.map.repeat.set(40, 4);
+        newMaterial.map.repeat.set(25, 1);
         tube.material = newMaterial;
     }
 }

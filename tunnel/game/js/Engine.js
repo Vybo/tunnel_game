@@ -168,7 +168,7 @@ function updatePositions() {
             }
         }
 
-        mainTube.material.map.offset.x -= (defaultSpeed * difficulty) / 10;
+        mainTube.material.map.offset.x -= (defaultSpeed * difficulty) / 20;
     }
 }
 
