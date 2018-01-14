@@ -51,8 +51,8 @@
       <file leaf-file-name="Engine.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="328" column="54" lean-forward="false" selection-start-line="328" selection-start-column="54" selection-end-line="328" selection-end-column="54" />
+            <state relative-caret-position="633">
+              <caret line="206" column="18" lean-forward="false" selection-start-line="206" selection-start-column="18" selection-end-line="206" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -95,21 +95,11 @@
       <file leaf-file-name="EnvironmentProvider.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="986">
-              <caret line="446" column="59" lean-forward="true" selection-start-line="446" selection-start-column="59" selection-end-line="446" selection-end-column="59" />
+            <state relative-caret-position="671">
+              <caret line="240" column="61" lean-forward="true" selection-start-line="240" selection-start-column="61" selection-end-line="240" selection-end-column="61" />
               <folding>
-                <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
+                <marker date="1515952099000" expanded="true" signature="26:28" ph="{...}" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="three.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/game/js/three.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443670">
-              <caret line="29578" column="0" lean-forward="false" selection-start-line="29578" selection-start-column="0" selection-end-line="29578" selection-end-column="0" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -127,8 +117,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>positionalau</find>
-      <find>enginesoun</find>
       <find>adjust</find>
       <find>sound</find>
       <find>enginesound</find>
@@ -157,6 +145,8 @@
       <find>updaterotat</find>
       <find>rotation</find>
       <find>bonuses</find>
+      <find>updaterot</find>
+      <find>.material</find>
     </findStrings>
     <replaceStrings>
       <replace>right</replace>
@@ -481,12 +471,12 @@
       <workItem from="1514647446756" duration="6984000" />
       <workItem from="1514656733068" duration="3836000" />
       <workItem from="1514913746188" duration="5679000" />
-      <workItem from="1515948146149" duration="2843000" />
+      <workItem from="1515948146149" duration="3892000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="88371000" />
+    <option name="totallyTimeSpent" value="89420000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1097" y="23" width="1463" height="1417" extended-state="0" />
@@ -539,7 +529,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/game/js/Engine.js</url>
-          <line>530</line>
+          <line>577</line>
           <properties />
           <option name="timeStamp" value="159" />
         </line-breakpoint>
@@ -562,7 +552,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="114" lean-forward="false" selection-start-line="36" selection-start-column="114" selection-end-line="36" selection-end-column="114" />
           <folding>
-            <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
+            <marker date="1515952099000" expanded="true" signature="26:28" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -596,7 +586,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="41" lean-forward="false" selection-start-line="36" selection-start-column="41" selection-end-line="36" selection-end-column="41" />
           <folding>
-            <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
+            <marker date="1515952099000" expanded="true" signature="26:28" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -802,14 +792,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="328" column="54" lean-forward="false" selection-start-line="328" selection-start-column="54" selection-end-line="328" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Downloads/stemkoski.github.com-master/Three.js/Simple-Glow.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="562">
@@ -818,12 +800,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="633">
+          <caret line="206" column="18" lean-forward="false" selection-start-line="206" selection-start-column="18" selection-end-line="206" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="446" column="59" lean-forward="true" selection-start-line="446" selection-start-column="59" selection-end-line="446" selection-end-column="59" />
+        <state relative-caret-position="671">
+          <caret line="240" column="61" lean-forward="true" selection-start-line="240" selection-start-column="61" selection-end-line="240" selection-end-column="61" />
           <folding>
-            <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
+            <marker date="1515952099000" expanded="true" signature="26:28" ph="{...}" />
           </folding>
         </state>
       </provider>

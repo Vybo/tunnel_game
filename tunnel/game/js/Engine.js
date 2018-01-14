@@ -200,6 +200,14 @@ function updateRotations() {
         object.rotation.y += 0.1;
     });
 
+    bonuses.stars.forEach( function(object) {
+        object.rotation.y += 0.1;
+    });
+
+    bonuses.arrows.forEach( function(object) {
+        object.rotation.y += 0.1;
+    });
+
     if (shieldActive) {
         shield.material.alphaMap.offset.y = tick;
     }
@@ -319,7 +327,16 @@ function regenerateBonuses() {
         return (prev.position.z < current.position.z) ? prev : current
     }, environmentProvider.bonusShield());
 
+    let furthestStar = bonuses.stars.reduce(function(prev, current) {
+        return (prev.position.z < current.position.z) ? prev : current
+    }, environmentProvider.bonusStar());
+
+    let furthestArrow = bonuses.arrows.reduce(function(prev, current) {
+        return (prev.position.z < current.position.z) ? prev : current
+    }, environmentProvider.bonusBrake());
+
     for (i = 0; i < shieldsToGenerate; i++) {
+
         let shield = environmentProvider.bonusShield();
 
         shield.position.z = GeometryGenerators.randomFloat(furthestShield.position.z - 4, furthestShield.position.z - 100);
@@ -331,6 +348,36 @@ function regenerateBonuses() {
         bonuses.shields.push(shield);
 
         scene.add(shield);
+    }
+
+    for (i = 0; i < starsToGenerate; i++) {
+
+        let star = environmentProvider.bonusStar();
+
+        star.position.z = GeometryGenerators.randomFloat(furthestStar.position.z - 4, furthestStar.position.z - 100);
+        star.position.x = GeometryGenerators.randomFloat(-3.5, 3.5);
+        star.position.y = GeometryGenerators.randomFloat(-3.5, 3.5);
+
+        star.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
+
+        bonuses.stars.push(star);
+
+        scene.add(star);
+    }
+
+    for (i = 0; i < arrowsToGenerate; i++) {
+
+        let arrow = environmentProvider.bonusBrake();
+
+        arrow.position.z = GeometryGenerators.randomFloat(furthestArrow.position.z - 4, furthestArrow.position.z - 100);
+        arrow.position.x = GeometryGenerators.randomFloat(-3.5, 3.5);
+        arrow.position.y = GeometryGenerators.randomFloat(-3.5, 3.5);
+
+        arrow.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
+
+        bonuses.arrows.push(arrow);
+
+        scene.add(arrow);
     }
 }
 

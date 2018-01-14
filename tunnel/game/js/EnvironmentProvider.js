@@ -222,22 +222,15 @@ class EnvironmentProvider {
             }
         );
 
-        mtlLoader.load(
-            'models/star.mtl',
+        objLoader = new THREE.OBJLoader(manager);
 
-            ( materials ) => {
-                materials.preload();
+        objLoader.load(
+            'models/coin.obj',
 
-                objLoader = new THREE.OBJLoader(manager);
-                objLoader.setMaterials(materials);
-
-                objLoader.load(
-                    'models/star.obj',
-
-                    ( object ) => {
-                        this.allModels.bonusStar = object;
-                    }
-                );
+            ( object ) => {
+                let material = new THREE.MeshPhongMaterial( { color: 0x00FF00, shininess: 300, specular: 0x111111 } );
+                object.material = material;
+                this.allModels.bonusStar = object;
             }
         );
 
@@ -443,17 +436,28 @@ class EnvironmentProvider {
         // 0x0000ff
 
         let shield = this.allModels.bonusShield.clone();
-        shield.scale.set(1.3, 1.3, 1.3);
+        shield.scale.set(1.4, 1.4, 1.4);
         this.putGlowOnMesh(shield, shield.scale, 0x0000ff);
         return shield;
     }
 
     bonusStar() {
-        return this.allModels.bonusStar.clone();
+
+        let star = this.allModels.bonusStar.clone();
+        star.rotateZ(Math.PI / 2);
+        star.scale.set(1.4, 1.4, 1.4);
+        this.putGlowOnMesh(star, star.scale, 0x009900);
+
+        return star;
     }
 
     bonusBrake() {
-        return this.allModels.bonusBrake.clone();
+
+        let arrow = this.allModels.bonusBrake.clone();
+        arrow.scale.set(1.4, 1.4, 1.4);
+        this.putGlowOnMesh(arrow, arrow.scale, 0xff0000);
+
+        return arrow;
     }
 
     texturedTube(tube, texture) {
