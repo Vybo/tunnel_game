@@ -531,7 +531,7 @@ function setupScene(){
 
             setupPlayer();
 
-            environmentProvider.texturedTube(tube, environmentProvider.loadedTextures.brick);
+            environmentProvider.texturedTube(tube, environmentProvider.loadedTextures.gradient);
 
             let impactS = new THREE.Audio(cameraAudioListener);
             impactS.setBuffer(environmentProvider.impactSound());

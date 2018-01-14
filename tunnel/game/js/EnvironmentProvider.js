@@ -37,7 +37,8 @@ class EnvironmentProvider {
             snow: null,
             brick: null,
             polys: null,
-            splatter4: null
+            splatter4: null,
+            gradient: null
         }
     }
 
@@ -76,26 +77,26 @@ class EnvironmentProvider {
                     that.allModels.shield = shieldMesh;
             });
 
-            textureLoader.load('textures/snow.png',
-
-                ( texture ) => {
-
-                    that.loadedTextures.snow = texture;
-            });
-
-            textureLoader.load('textures/nebula.jpg',
-
-                ( texture ) => {
-
-                    that.loadedTextures.nebula = texture;
-            });
-
-            textureLoader.load('textures/concrete.jpg',
-
-                ( texture ) => {
-
-                    that.loadedTextures.concrete = texture;
-            });
+            // textureLoader.load('textures/snow.png',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.snow = texture;
+            // });
+            //
+            // textureLoader.load('textures/nebula.jpg',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.nebula = texture;
+            // });
+            //
+            // textureLoader.load('textures/concrete.jpg',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.concrete = texture;
+            // });
 
             textureLoader.load('textures/stone.jpg',
 
@@ -104,12 +105,19 @@ class EnvironmentProvider {
                     that.loadedTextures.brick = texture;
             });
 
-            textureLoader.load('textures/polys.jpg',
+            textureLoader.load('textures/gradient.png',
 
                 ( texture ) => {
 
-                    that.loadedTextures.polys = texture;
-            });
+                    that.loadedTextures.gradient = texture;
+                });
+
+            // textureLoader.load('textures/polys.jpg',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.polys = texture;
+            // });
 
             textureLoader.load('textures/paint-splatter-4.png',
 
@@ -168,56 +176,62 @@ class EnvironmentProvider {
         //     }
         // );
 
-        // mtlLoader.load(
-        //     'models/arrow.mtl',
-        //
-        //     ( materials ) => {
-        //         materials.preload();
-        //         objLoader.setMaterials(materials);
-        //
-        //         objLoader.load(
-        //             'models/arrow.obj',
-        //
-        //             ( object ) => {
-        //                 this.allModels.bonusBrake = object;
-        //             }
-        //         );
-        //     }
-        // );
-        //
-        // mtlLoader.load(
-        //     'models/shield.mtl',
-        //
-        //     ( materials ) => {
-        //         materials.preload();
-        //         objLoader.setMaterials(materials);
-        //
-        //         objLoader.load(
-        //             'models/shield.obj',
-        //
-        //             ( object ) => {
-        //                 this.allModels.bonusShield = object;
-        //             }
-        //         );
-        //     }
-        // );
-        //
-        // mtlLoader.load(
-        //     'models/star.mtl',
-        //
-        //     ( materials ) => {
-        //         materials.preload();
-        //         objLoader.setMaterials(materials);
-        //
-        //         objLoader.load(
-        //             'models/star.obj',
-        //
-        //             ( object ) => {
-        //                 this.allModels.bonusStar = object;
-        //             }
-        //         );
-        //     }
-        // );
+        mtlLoader.load(
+            'models/arrow.mtl',
+
+            ( materials ) => {
+                materials.preload();
+
+                objLoader = new THREE.OBJLoader(manager);
+                objLoader.setMaterials(materials);
+
+                objLoader.load(
+                    'models/arrow.obj',
+
+                    ( object ) => {
+                        this.allModels.bonusBrake = object;
+                    }
+                );
+            }
+        );
+
+        mtlLoader.load(
+            'models/shield.mtl',
+
+            ( materials ) => {
+                materials.preload();
+
+                objLoader = new THREE.OBJLoader(manager);
+                objLoader.setMaterials(materials);
+
+                objLoader.load(
+                    'models/shield.obj',
+
+                    ( object ) => {
+                        this.allModels.bonusShield = object;
+                    }
+                );
+            }
+        );
+
+        mtlLoader.load(
+            'models/star.mtl',
+
+            ( materials ) => {
+                materials.preload();
+
+                objLoader = new THREE.OBJLoader(manager);
+                objLoader.setMaterials(materials);
+
+                objLoader.load(
+                    'models/star.obj',
+
+                    ( object ) => {
+                        this.allModels.bonusStar = object;
+                    }
+                );
+            }
+        );
 
         jsonLoader.load(
             'models/easy1.json',
@@ -338,34 +352,35 @@ class EnvironmentProvider {
         // // obstacle.material.map.wrapT = THREE.ClampToEdgeWrapping;
         // obstacle.material.map.repeat.set(1, 1);
 
-        let params = {
-            minScale: scale,
-            maxScale: 2*scale,
-            rotate: true
-        };
+        // let params = {
+        //     minScale: scale,
+        //     maxScale: 2*scale,
+        //     rotate: true
+        // };
+        //
+        // let decalMaterial = new THREE.MeshPhongMaterial( {
+        //     specular: 0x444444,
+        //     map: this.loadedTextures.splatter4,
+        //     shininess: 30,
+        //     transparent: true,
+        //     depthTest: true,
+        //     depthWrite: false,
+        //     wireframe: false,
+        //     color: GeometryGenerators.randomColor()
+        // } );
+        //
+        // let randomScale = params.minScale + Math.random() * ( params.maxScale - params.minScale );
+        // let position = new THREE.Vector3(0,0,0);
+        // let orientation = new THREE.Vector3(0,0,0);
+        // let size = new THREE.Vector3(randomScale, randomScale, randomScale);
 
-        let decalMaterial = new THREE.MeshPhongMaterial( {
-            specular: 0x444444,
-            map: this.loadedTextures.splatter4,
-            shininess: 30,
-            transparent: true,
-            depthTest: true,
-            depthWrite: false,
-            wireframe: false,
-            color: GeometryGenerators.randomColor()
-        } );
+        // let splatteredObstacle = new THREE.Mesh( new THREE.DecalGeometry( obstacle, position, orientation, size ), decalMaterial );
+        // splatteredObstacle.rotation.x = Math.PI / 2;
+        // splatteredObstacle.rotation.y += GeometryGenerators.randomFloat(0, Math.PI / 2);
+        // splatteredObstacle.scale.set(scale, scale, scale);
 
-        let randomScale = params.minScale + Math.random() * ( params.maxScale - params.minScale );
-        let position = new THREE.Vector3(0,0,0);
-        let orientation = new THREE.Vector3(0,0,0);
-        let size = new THREE.Vector3(randomScale, randomScale, randomScale);
-
-        let splatteredObstacle = new THREE.Mesh( new THREE.DecalGeometry( obstacle, position, orientation, size ), decalMaterial );
-        splatteredObstacle.rotation.x = Math.PI / 2;
-        splatteredObstacle.rotation.y += GeometryGenerators.randomFloat(0, Math.PI / 2);
-        splatteredObstacle.scale.set(scale, scale, scale);
-
-        return splatteredObstacle;
+        // return splatteredObstacle;
+        return obstacle;
     }
 
     randomObject(array) {
