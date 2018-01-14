@@ -10,8 +10,8 @@ var firstPerson = false;
 var cameraMovementMultiplier = 1.0;
 var tick = 0;
 
-var shieldPower = 100;
-var brake = 100;
+var shieldPower = 10;
+var brakePower = 0;
 var distance = 0;
 var speed = 0;
 
@@ -23,6 +23,11 @@ var tubes = [];
 var mainTube = null;
 var obstacles = [];
 var lights = [];
+var bonuses = {
+    shields: [],
+    stars: [],
+    arrows:[]
+}
 var obstacleRotationMultipliers = [];
 
 var scene = new THREE.Scene();
@@ -72,6 +77,7 @@ function animate() {
 
     regenerateLights();
     regenerateObstacles();
+    regenerateBonuses();
     updateCameraPosition();
 
     adjustDifficulty();
@@ -157,6 +163,18 @@ function updatePositions() {
             object.position.z += defaultSpeed * difficulty;
         });
 
+        bonuses.shields.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+
+        bonuses.arrows.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+
+        bonuses.stars.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+
         speed = 0.277778 * defaultSpeed * difficulty * 100;
         distance += 0.277778 * defaultSpeed * difficulty;
 
@@ -176,6 +194,10 @@ function updateRotations() {
 
     obstacles.forEach( function(object) {
         object.rotation.y += object.rotationCoefficient + (difficulty / 1000);
+    });
+
+    bonuses.shields.forEach( function(object) {
+        object.rotation.y += 0.1;
     });
 
     if (shieldActive) {
@@ -280,6 +302,35 @@ function regenerateObstacles() {
         obstacles.push(obstacle);
 
         scene.add(obstacle);
+    }
+}
+
+function regenerateBonuses() {
+
+    clearObjectsBehindPlayer(bonuses.arrows, 0, false);
+    clearObjectsBehindPlayer(bonuses.shields, 0, false);
+    clearObjectsBehindPlayer(bonuses.stars, 0, false);
+
+    let shieldsToGenerate = 4 - bonuses.shields.length;
+    let starsToGenerate = 10 - bonuses.stars.length;
+    let arrowsToGenerate = 4 - bonuses.arrows.length;
+
+    let furthestShield = bonuses.shields.reduce(function(prev, current) {
+        return (prev.position.z < current.position.z) ? prev : current
+    }, environmentProvider.bonusShield());
+
+    for (i = 0; i < shieldsToGenerate; i++) {
+        let shield = environmentProvider.bonusShield();
+
+        shield.position.z = GeometryGenerators.randomFloat(furthestShield.position.z - 4, furthestShield.position.z - 100);
+        shield.position.x = GeometryGenerators.randomFloat(-3.5, 3.5);
+        shield.position.y = GeometryGenerators.randomFloat(-3.5, 3.5);
+
+        shield.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
+
+        bonuses.shields.push(shield);
+
+        scene.add(shield);
     }
 }
 

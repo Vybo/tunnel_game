@@ -21,8 +21,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="645">
-              <caret line="43" column="34" lean-forward="false" selection-start-line="43" selection-start-column="34" selection-end-line="43" selection-end-column="34" />
+            <state relative-caret-position="467">
+              <caret line="40" column="10" lean-forward="true" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -48,11 +48,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Engine.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Engine.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="444">
-              <caret line="479" column="4" lean-forward="false" selection-start-line="479" selection-start-column="4" selection-end-line="479" selection-end-column="4" />
+            <state relative-caret-position="765">
+              <caret line="328" column="54" lean-forward="false" selection-start-line="328" selection-start-column="54" selection-end-line="328" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -92,13 +92,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EnvironmentProvider.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="EnvironmentProvider.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="596">
-              <caret line="195" column="10" lean-forward="false" selection-start-line="195" selection-start-column="10" selection-end-line="195" selection-end-column="10" />
+            <state relative-caret-position="986">
+              <caret line="446" column="59" lean-forward="true" selection-start-line="446" selection-start-column="59" selection-end-line="446" selection-end-column="59" />
               <folding>
-                <marker date="1515949078000" expanded="true" signature="26:28" ph="{...}" />
+                <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -127,12 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>setbuffer</find>
-      <find>setrun</find>
-      <find>setuppla</find>
-      <find>this.allsounds.eng</find>
-      <find>setupscene</find>
-      <find>positional</find>
       <find>positionalau</find>
       <find>enginesoun</find>
       <find>adjust</find>
@@ -157,6 +151,12 @@
       <find>metal</find>
       <find>ship1</find>
       <find>texture</find>
+      <find>setrunning</find>
+      <find>lenght</find>
+      <find>regenerate</find>
+      <find>updaterotat</find>
+      <find>rotation</find>
+      <find>bonuses</find>
     </findStrings>
     <replaceStrings>
       <replace>right</replace>
@@ -481,16 +481,16 @@
       <workItem from="1514647446756" duration="6984000" />
       <workItem from="1514656733068" duration="3836000" />
       <workItem from="1514913746188" duration="5679000" />
-      <workItem from="1515948146149" duration="929000" />
+      <workItem from="1515948146149" duration="2843000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86457000" />
+    <option name="totallyTimeSpent" value="88371000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1097" y="23" width="1463" height="1417" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1997226" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -500,7 +500,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3298153" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.43418014" sideWeight="0.49750888" order="3" side_tool="false" content_ui="tabs" x="683" y="449" width="619" height="432" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43418014" sideWeight="0.49750888" order="3" side_tool="false" content_ui="tabs" x="683" y="449" width="619" height="432" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -539,7 +539,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/game/js/Engine.js</url>
-          <line>479</line>
+          <line>530</line>
           <properties />
           <option name="timeStamp" value="159" />
         </line-breakpoint>
@@ -549,14 +549,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/js/GeometryGenerators.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -570,7 +562,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="114" lean-forward="false" selection-start-line="36" selection-start-column="114" selection-end-line="36" selection-end-column="114" />
           <folding>
-            <marker date="1515949078000" expanded="true" signature="26:28" ph="{...}" />
+            <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -604,7 +596,7 @@
         <state relative-caret-position="540">
           <caret line="36" column="41" lean-forward="false" selection-start-line="36" selection-start-column="41" selection-end-line="36" selection-end-column="41" />
           <folding>
-            <marker date="1515949078000" expanded="true" signature="26:28" ph="{...}" />
+            <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -758,14 +750,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game/css/transitions.css" />
-    <entry file="file://$PROJECT_DIR$/game/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="34" lean-forward="false" selection-start-line="43" selection-start-column="34" selection-end-line="43" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1740">
@@ -810,21 +794,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
+    <entry file="file://$PROJECT_DIR$/game/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="596">
-          <caret line="195" column="10" lean-forward="false" selection-start-line="195" selection-start-column="10" selection-end-line="195" selection-end-column="10" />
-          <folding>
-            <marker date="1515949078000" expanded="true" signature="26:28" ph="{...}" />
-          </folding>
+        <state relative-caret-position="467">
+          <caret line="40" column="10" lean-forward="true" selection-start-line="40" selection-start-column="10" selection-end-line="40" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/game/js/Engine.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="479" column="4" lean-forward="false" selection-start-line="479" selection-start-column="4" selection-end-line="479" selection-end-column="4" />
+        <state relative-caret-position="765">
+          <caret line="328" column="54" lean-forward="false" selection-start-line="328" selection-start-column="54" selection-end-line="328" selection-end-column="54" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/stemkoski.github.com-master/Three.js/Simple-Glow.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="562">
+          <caret line="149" column="1" lean-forward="true" selection-start-line="149" selection-start-column="1" selection-end-line="149" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/game/js/EnvironmentProvider.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="986">
+          <caret line="446" column="59" lean-forward="true" selection-start-line="446" selection-start-column="59" selection-end-line="446" selection-end-column="59" />
+          <folding>
+            <marker date="1515951051000" expanded="true" signature="26:28" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>

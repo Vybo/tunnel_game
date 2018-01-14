@@ -38,7 +38,8 @@ class EnvironmentProvider {
             brick: null,
             polys: null,
             splatter4: null,
-            gradient: null
+            gradient: null,
+            glow: null
         }
     }
 
@@ -110,6 +111,13 @@ class EnvironmentProvider {
                 ( texture ) => {
 
                     that.loadedTextures.gradient = texture;
+            });
+
+            textureLoader.load('textures/glow.png',
+
+                ( texture ) => {
+
+                    that.loadedTextures.glow = texture;
                 });
 
             // textureLoader.load('textures/polys.jpg',
@@ -412,8 +420,32 @@ class EnvironmentProvider {
         return this.allSounds.impact;
     }
 
+    putGlowOnMesh(mesh, scale, color) {
+        // SUPER SIMPLE GLOW EFFECT
+        // use sprite because it appears the same from all angles
+
+        let spriteMaterial = new THREE.SpriteMaterial({
+                map: this.loadedTextures.glow,
+                useScreenCoordinates: false,
+                color: color,
+                transparent: false,
+                blending: THREE.AdditiveBlending
+        });
+
+        let sprite = new THREE.Sprite( spriteMaterial );
+        sprite.scale.set(scale.x, scale.y, 1.0);
+
+        mesh.add(sprite); // this centers the glow at the mesh
+    }
+
     bonusShield() {
-        return this.allModels.bonusShield.clone();
+
+        // 0x0000ff
+
+        let shield = this.allModels.bonusShield.clone();
+        shield.scale.set(1.3, 1.3, 1.3);
+        this.putGlowOnMesh(shield, shield.scale, 0x0000ff);
+        return shield;
     }
 
     bonusStar() {
