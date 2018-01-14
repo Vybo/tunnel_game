@@ -154,20 +154,22 @@ function checkCollision() {
         let arrowsCollisions = caster.intersectObjects(bonuses.arrows, true);
 
         if (arrowsCollisions.length > 0 && arrowsCollisions[0].distance <= maxDistance) {
-            brakePower = brakePower + 10 > 100 ? 100 : brakePower + 10;
+            brakePower = brakePower + 40 > 100 ? 100 : brakePower + 40;
             removeMeshFromSceneAndArray(arrowsCollisions[0], bonuses.arrows);
             blinkLightsRed(1, function () {});
             console.log("Picked up arrow.");
+            interface.flashMessage("Picked up bonus", "Brake power!");
             return;
         }
 
         let shieldsCollisions = caster.intersectObjects(bonuses.shields, true);
 
         if (shieldsCollisions.length > 0 && shieldsCollisions[0].distance <= maxDistance) {
-            shieldPower = shieldPower + 10 > 100 ? 100 : shieldPower + 10;
+            shieldPower = shieldPower + 20 > 100 ? 100 : shieldPower + 20;
             removeMeshFromSceneAndArray(shieldsCollisions[0], bonuses.shields);
             blinkLightsBlue(1, function () {});
             console.log("Picked up shield.");
+            interface.flashMessage("Picked up bonus", "Shield power!");
             return;
         }
 
@@ -178,6 +180,7 @@ function checkCollision() {
             removeMeshFromSceneAndArray(starsCollisions[0], bonuses.stars);
             blinkLightsGreen(1, function () {});
             console.log("Picked up coin.");
+            interface.flashMessage("Picked up bonus", "1000 points!");
             return;
         }
     }
@@ -729,6 +732,7 @@ function setRunning(running) {
 function setupScene(){
     interface.setLoadingVisibility(true);
     interface.setIndicatorsVisibility(false);
+    interface.setMessageVisibility(false);
     interface.setMenuVisibility(false);
 
     let light = new THREE.AmbientLight( 0x444444 );
@@ -781,6 +785,7 @@ function setupScene(){
 
             interface.setLoadingVisibility(false);
             interface.setIndicatorsVisibility(false);
+            interface.setMessageVisibility(false);
             interface.setMenuVisibility(true);
         });
     });

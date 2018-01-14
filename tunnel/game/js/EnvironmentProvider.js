@@ -397,10 +397,6 @@ class EnvironmentProvider {
         return ship;
     }
 
-    shield() {
-        return this.allModels.shield;
-    }
-
     flybySound() {
         return this.allSounds.flyby;
     }
@@ -430,13 +426,19 @@ class EnvironmentProvider {
         mesh.add(sprite); // this centers the glow at the mesh
     }
 
+    shield() {
+        let shield = this.allModels.shield.clone();
+        this.putGlowOnMesh(shield, new THREE.Vector3(1.7, 1.7, 1.7), 0xffffff);
+        return shield;
+    }
+
     bonusShield() {
 
         // 0x0000ff
 
         let shield = this.allModels.bonusShield.clone();
         shield.scale.set(1.8, 1.8, 1.8);
-        this.putGlowOnMesh(shield, shield.scale, 0x0000ff);
+        this.putGlowOnMesh(shield, new THREE.Vector3(1.5, 1.5, 1.5), 0x0000ff);
         return shield;
     }
 
@@ -445,7 +447,7 @@ class EnvironmentProvider {
         let star = this.allModels.bonusStar.clone();
         star.rotateZ(Math.PI / 2);
         star.scale.set(1.8, 1.8, 1.8);
-        this.putGlowOnMesh(star, star.scale, 0x009900);
+        this.putGlowOnMesh(star, new THREE.Vector3(1.5, 1.5, 1.5), 0x009900);
 
         return star;
     }
@@ -454,7 +456,7 @@ class EnvironmentProvider {
 
         let arrow = this.allModels.bonusBrake.clone();
         arrow.scale.set(1.8, 1.8, 1.8);
-        this.putGlowOnMesh(arrow, arrow.scale, 0xff0000);
+        this.putGlowOnMesh(arrow, new THREE.Vector3(1.5, 1.5, 1.5), 0xff0000);
 
         return arrow;
     }
