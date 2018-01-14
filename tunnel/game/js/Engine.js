@@ -18,6 +18,7 @@ var speed = 0;
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 document.addEventListener( 'mousedown', onMouseDown );
 document.addEventListener( 'mouseup', onMouseUp );
+document.addEventListener('contextmenu', event => event.preventDefault()); // Prevents context menu from popping up, right mouse button is used for game.
 
 var tubes = [];
 var mainTube = null;
@@ -62,6 +63,7 @@ var interface = new Interface();
 var storage = new Storage();
 
 var shieldActive = false;
+var brakeActive = false;
 
 var impactSound = null;
 var engineSound = null;
@@ -94,16 +96,31 @@ function animate() {
 }
 
 function adjustDifficulty() {
-    difficulty += 0.01;
-    if (isRunning) particleSystem1Options.velocity.z = (difficulty - 1.0) * 0.5;
 
-    tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b - 0.0001 : 0;
-    tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g - 0.0001 : 0;
+    if (brakeActive) {
 
-    adjustAudioPlaybackSpeed(difficulty / 10);
+        difficulty -= 0.05;
+        if (isRunning) particleSystem1Options.velocity.z = (difficulty - 1.0) * 0.5 * -1;
+
+        tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b + 0.0001 : 0;
+        tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g + 0.0001 : 0;
+
+        adjustAudioPlaybackSpeed(difficulty / 10);
+
+    } else {
+
+        difficulty += 0.01;
+        if (isRunning) particleSystem1Options.velocity.z = (difficulty - 1.0) * 0.5;
+
+        tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b - 0.0001 : 0;
+        tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g - 0.0001 : 0;
+
+        adjustAudioPlaybackSpeed(difficulty / 10);
+    }
 }
 
 function checkCollision() {
+
     if (isRunning && !shieldActive) {
         let caster = new THREE.Raycaster();
         let ray = new THREE.Vector3(0, 0, -(defaultSpeed * difficulty));
@@ -127,6 +144,54 @@ function checkCollision() {
             });
         }
     }
+
+    if (isRunning) {
+        let caster = new THREE.Raycaster();
+        let ray = new THREE.Vector3(0, 0, -(defaultSpeed * difficulty));
+        let maxDistance = 0.0;
+
+        caster.set(player.position, ray);
+        let arrowsCollisions = caster.intersectObjects(bonuses.arrows, true);
+
+        if (arrowsCollisions.length > 0 && arrowsCollisions[0].distance <= maxDistance) {
+            brakePower = brakePower + 10 > 100 ? 100 : brakePower + 10;
+            removeMeshFromSceneAndArray(arrowsCollisions[0], bonuses.arrows);
+            blinkLightsRed(1, function () {});
+            console.log("Picked up arrow.");
+            return;
+        }
+
+        let shieldsCollisions = caster.intersectObjects(bonuses.shields, true);
+
+        if (shieldsCollisions.length > 0 && shieldsCollisions[0].distance <= maxDistance) {
+            shieldPower = shieldPower + 10 > 100 ? 100 : shieldPower + 10;
+            removeMeshFromSceneAndArray(shieldsCollisions[0], bonuses.shields);
+            blinkLightsBlue(1, function () {});
+            console.log("Picked up shield.");
+            return;
+        }
+
+        let starsCollisions = caster.intersectObjects(bonuses.stars, true);
+
+        if (starsCollisions.length > 0 && starsCollisions[0].distance <= maxDistance) {
+            distance += 100;
+            removeMeshFromSceneAndArray(starsCollisions[0], bonuses.stars);
+            blinkLightsGreen(1, function () {});
+            console.log("Picked up coin.");
+            return;
+        }
+    }
+}
+
+function removeMeshFromSceneAndArray(objectToRemove, array) {
+
+    array.forEach( function(object, index, array) {
+        if (objectToRemove.id == object.id || objectToRemove.object.parent.id == object.id) {
+
+            array.splice(index, 1);
+            scene.remove(object);
+        }
+    });
 }
 
 function updateHighscore(score) {
@@ -147,6 +212,8 @@ function reset() {
     tubeLightsColor.g = 1;
 
     distance = 0;
+    brakePower = 10;
+    shieldPower = 50;
     // isRunning = true;
     setRunning(true);
 }
@@ -186,6 +253,14 @@ function updatePositions() {
             }
         }
 
+        if (brakeActive) {
+            brakePower -= 0.5;
+
+            if (brakePower < 0) {
+                setBrakeActive(false);
+            }
+        }
+
         mainTube.material.map.offset.x -= (defaultSpeed * difficulty) / 20;
     }
 }
@@ -213,7 +288,7 @@ function updateRotations() {
     }
 }
 
-const bugfixmodifier = 0.6;
+const bugfixmodifier = 0.7;
 
 function updateCameraPosition() { // Refactor to updatePlayer
 
@@ -256,6 +331,7 @@ function updateInterfaceValues() {
     interface.updateDistance(distance);
     interface.updateSpeed(speed);
     interface.updateShield(shieldPower);
+    interface.updateBrake(brakePower);
 }
 
 function updateMenuValues() {
@@ -273,6 +349,10 @@ function setShieldActive(active) {
         retractShield( function () { shield.visible = false; })
     }
 
+}
+
+function setBrakeActive(active) {
+    brakeActive = active;
 }
 
 function regenerateObstacles() {
@@ -313,11 +393,13 @@ function regenerateObstacles() {
     }
 }
 
+var bonusesSpread = 3.0;
+
 function regenerateBonuses() {
 
-    clearObjectsBehindPlayer(bonuses.arrows, 0, false);
-    clearObjectsBehindPlayer(bonuses.shields, 0, false);
-    clearObjectsBehindPlayer(bonuses.stars, 0, false);
+    clearObjectsBehindPlayer(bonuses.arrows, 0.5, false);
+    clearObjectsBehindPlayer(bonuses.shields, 0.5, false);
+    clearObjectsBehindPlayer(bonuses.stars, 0.5, false);
 
     let shieldsToGenerate = 4 - bonuses.shields.length;
     let starsToGenerate = 10 - bonuses.stars.length;
@@ -340,8 +422,8 @@ function regenerateBonuses() {
         let shield = environmentProvider.bonusShield();
 
         shield.position.z = GeometryGenerators.randomFloat(furthestShield.position.z - 4, furthestShield.position.z - 100);
-        shield.position.x = GeometryGenerators.randomFloat(-3.5, 3.5);
-        shield.position.y = GeometryGenerators.randomFloat(-3.5, 3.5);
+        shield.position.x = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+        shield.position.y = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
 
         shield.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
 
@@ -355,8 +437,8 @@ function regenerateBonuses() {
         let star = environmentProvider.bonusStar();
 
         star.position.z = GeometryGenerators.randomFloat(furthestStar.position.z - 4, furthestStar.position.z - 100);
-        star.position.x = GeometryGenerators.randomFloat(-3.5, 3.5);
-        star.position.y = GeometryGenerators.randomFloat(-3.5, 3.5);
+        star.position.x = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+        star.position.y = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
 
         star.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
 
@@ -370,8 +452,8 @@ function regenerateBonuses() {
         let arrow = environmentProvider.bonusBrake();
 
         arrow.position.z = GeometryGenerators.randomFloat(furthestArrow.position.z - 4, furthestArrow.position.z - 100);
-        arrow.position.x = GeometryGenerators.randomFloat(-3.5, 3.5);
-        arrow.position.y = GeometryGenerators.randomFloat(-3.5, 3.5);
+        arrow.position.x = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+        arrow.position.y = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
 
         arrow.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
 
@@ -412,7 +494,7 @@ function regenerateLights() {
     let diameterletoff = 0.3;
     for (i = 0; i <= lightsToGenerate; i++) {
 
-        let light1 = new THREE.PointLight( tubeLightsColor, 0.3, 30 );
+        let light1 = new THREE.PointLight( tubeLightsColor, 0.3, 25 );
         light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: tubeLightsColor } ) ) );
         light1.position.x = Math.cos(90) * (tubeDiameter- diameterletoff);
         light1.position.y = Math.sin(90) * (tubeDiameter- diameterletoff);
@@ -462,6 +544,52 @@ function blinkLightsRed(times, onFinished) {
     var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
     lightsBlinkingTween = new TWEEN.Tween(colorValues)
         .to({r: 1.0, b: 0.0, g: 0.0 }, 500)
+        .easing(TWEEN.Easing.Quartic.InOut)
+        .onUpdate( function() {
+            tubeLightsColor.r = colorValues.r;
+            tubeLightsColor.g = colorValues.g;
+            tubeLightsColor.b = colorValues.b;
+            setLightsColor(tubeLightsColor);
+        })
+        .yoyo(true).repeat(times)
+        .start()
+        .onComplete(function() {
+            tubeLightsColor.r = 1.0;
+            tubeLightsColor.b = 1.0;
+            tubeLightsColor.g = 1.0;
+            setLightsColor(tubeLightsColor);
+
+            onFinished();
+        });
+}
+
+function blinkLightsGreen(times, onFinished) {
+    var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
+    lightsBlinkingTween = new TWEEN.Tween(colorValues)
+        .to({r: 0.0, b: 0.0, g: 1.0 }, 500)
+        .easing(TWEEN.Easing.Quartic.InOut)
+        .onUpdate( function() {
+            tubeLightsColor.r = colorValues.r;
+            tubeLightsColor.g = colorValues.g;
+            tubeLightsColor.b = colorValues.b;
+            setLightsColor(tubeLightsColor);
+        })
+        .yoyo(true).repeat(times)
+        .start()
+        .onComplete(function() {
+            tubeLightsColor.r = 1.0;
+            tubeLightsColor.b = 1.0;
+            tubeLightsColor.g = 1.0;
+            setLightsColor(tubeLightsColor);
+
+            onFinished();
+        });
+}
+
+function blinkLightsBlue(times, onFinished) {
+    var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
+    lightsBlinkingTween = new TWEEN.Tween(colorValues)
+        .to({r: 0.0, b: 1.0, g: 0.0 }, 500)
         .easing(TWEEN.Easing.Quartic.InOut)
         .onUpdate( function() {
             tubeLightsColor.r = colorValues.r;
@@ -568,6 +696,7 @@ function setupPlayer() {
     shield = environmentProvider.shield();
     scene.add(shield);
     setShieldActive(false);
+    setBrakeActive(false);
 
     cameraAudioListener = new THREE.AudioListener();
     camera.add(cameraAudioListener);
@@ -602,7 +731,7 @@ function setupScene(){
     interface.setIndicatorsVisibility(false);
     interface.setMenuVisibility(false);
 
-    let light = new THREE.AmbientLight( 0x555555 );
+    let light = new THREE.AmbientLight( 0x444444 );
     scene.add(light);
 
     pointLight = new THREE.SpotLight( 0xffffff, 1, 200, 0.5, 0.5, 1 );
@@ -668,7 +797,9 @@ function onMouseDown ( e ) {
             setShieldActive(true);
         }
     } else if (e.which === 3) {
-        /*Right Mouse*/
+        if (isRunning) {
+            setBrakeActive(true);
+        }
     }
 }
 
@@ -678,7 +809,9 @@ function onMouseUp ( e ) {
             setShieldActive(false);
         }
     } else if (e.which === 3) {
-        /*Right Mouse*/
+        if (isRunning) {
+            setBrakeActive(false);
+        }
     }
 }
 

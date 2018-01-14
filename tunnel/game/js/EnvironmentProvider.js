@@ -419,7 +419,6 @@ class EnvironmentProvider {
 
         let spriteMaterial = new THREE.SpriteMaterial({
                 map: this.loadedTextures.glow,
-                useScreenCoordinates: false,
                 color: color,
                 transparent: false,
                 blending: THREE.AdditiveBlending
@@ -436,7 +435,7 @@ class EnvironmentProvider {
         // 0x0000ff
 
         let shield = this.allModels.bonusShield.clone();
-        shield.scale.set(1.4, 1.4, 1.4);
+        shield.scale.set(1.8, 1.8, 1.8);
         this.putGlowOnMesh(shield, shield.scale, 0x0000ff);
         return shield;
     }
@@ -445,7 +444,7 @@ class EnvironmentProvider {
 
         let star = this.allModels.bonusStar.clone();
         star.rotateZ(Math.PI / 2);
-        star.scale.set(1.4, 1.4, 1.4);
+        star.scale.set(1.8, 1.8, 1.8);
         this.putGlowOnMesh(star, star.scale, 0x009900);
 
         return star;
@@ -454,7 +453,7 @@ class EnvironmentProvider {
     bonusBrake() {
 
         let arrow = this.allModels.bonusBrake.clone();
-        arrow.scale.set(1.4, 1.4, 1.4);
+        arrow.scale.set(1.8, 1.8, 1.8);
         this.putGlowOnMesh(arrow, arrow.scale, 0xff0000);
 
         return arrow;

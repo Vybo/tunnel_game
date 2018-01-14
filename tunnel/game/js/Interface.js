@@ -65,7 +65,7 @@ class Interface {
         this.shield.text(shield.toFixed(0) + " %");
     }
 
-    udpateBrake(brake) {
+    updateBrake(brake) {
         this.brake.text(brake.toFixed(0) + " %");
     }
 
