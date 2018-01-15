@@ -28,7 +28,9 @@ class EnvironmentProvider {
         this.allSounds = {
             engine: null,
             flyby: null,
-            impact: null
+            impact: null,
+            pickup: null,
+            music: null
         };
 
         this.loadedTextures = {
@@ -313,7 +315,32 @@ class EnvironmentProvider {
                                 that.allSounds.impact = buffer3;
                                 console.log("Impact sound");
 
-                                onLoadedHandler();
+                                audioLoader.load(
+                                    'sounds/asimov.mp3',
+
+                                    function ( buffer4 ) {
+
+                                        that.allSounds.music = buffer4;
+                                        console.log("Music");
+
+                                        audioLoader.load(
+                                            'sounds/pickup.wav',
+
+                                            function ( buffer5 ) {
+
+                                                that.allSounds.pickup = buffer5;
+                                                console.log("Pickup sound");
+
+                                                onLoadedHandler();
+                                            },
+                                            null,
+                                            audioErrorFunction
+                                        );
+                                    },
+                                    null,
+                                    audioErrorFunction
+                                );
+
                             },
                             null,
                             audioErrorFunction
@@ -403,6 +430,10 @@ class EnvironmentProvider {
 
     engineSound() {
         return this.allSounds.engine;
+    }
+
+    music() {
+        return this.allSounds.music;
     }
 
     impactSound() {

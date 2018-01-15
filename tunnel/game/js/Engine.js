@@ -67,6 +67,7 @@ var brakeActive = false;
 
 var impactSound = null;
 var engineSound = null;
+var gameMusic = null;
 
 function animate() {
 
@@ -176,11 +177,11 @@ function checkCollision() {
         let starsCollisions = caster.intersectObjects(bonuses.stars, true);
 
         if (starsCollisions.length > 0 && starsCollisions[0].distance <= maxDistance) {
-            distance += 100;
+            distance += 400;
             removeMeshFromSceneAndArray(starsCollisions[0], bonuses.stars);
             blinkLightsGreen(1, function () {});
             console.log("Picked up coin.");
-            interface.flashMessage("Picked up bonus", "1000 points!");
+            interface.flashMessage("Picked up bonus", "400 points!");
             return;
         }
     }
@@ -503,6 +504,7 @@ function regenerateLights() {
         light1.position.y = Math.sin(90) * (tubeDiameter- diameterletoff);
         light1.position.z = furthestDistance - lightsSpacing;
         furthestDistance += lightsSpacing;
+        environmentProvider.putGlowOnMesh(light1, new THREE.Vector3(1.1,1.1,1.1), 0x555555);
         lights.push(light1);
         scene.add(light1);
     }
@@ -655,6 +657,25 @@ function adjustEngineSoundSpeed(desiredRate, onComplete) {
     engineSound.setPlaybackRate(desiredRate);
 }
 
+function playMusic(fromBeginning) {
+    if (gameMusic != null) {
+        gameMusic.pause();
+    }
+
+    let playbackStart = 0;
+    if (!fromBeginning) {
+        playbackStart = Math.floor(GeometryGenerators.randomFloat(0, 360));
+    }
+
+    gameMusic.offset = playbackStart;
+
+    gameMusic.play();
+}
+
+function stopMusic() {
+    gameMusic.stop();
+}
+
 function setupPlayer() {
 
     if (firstPerson) {
@@ -712,6 +733,7 @@ function setRunning(running) {
         interface.setIndicatorsVisibility(true);
         interface.setMenuVisibility(false);
         engineSound.play();
+        playMusic(false);
 
     } else {
         isRunning = false;
@@ -724,6 +746,7 @@ function setRunning(running) {
 
         adjustEngineSoundSpeed(0.3);
         engineSound.stop();
+        stopMusic();
 
         updateMenuValues();
     }
@@ -771,9 +794,15 @@ function setupScene(){
 
             engineSound = new THREE.PositionalAudio(cameraAudioListener);
             engineSound.setBuffer(environmentProvider.engineSound());
-            engineSound.setVolume(0.4);
+            engineSound.setVolume(0.5);
             engineSound.setLoop(true);
             player.add(engineSound);
+
+            gameMusic = new THREE.Audio(cameraAudioListener);
+            gameMusic.setBuffer(environmentProvider.music());
+            gameMusic.setVolume(0.4);
+            gameMusic.setLoop(true);
+            // scene.add(gameMusic);
 
             animate();
 
