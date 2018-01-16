@@ -45,7 +45,7 @@ class EnvironmentProvider {
         }
     }
 
-    loadModels(onLoadedHandler) {
+    loadModels(onLoadedHandler, interfaceProvider) {
         var that = this;
 
         let manager = new THREE.LoadingManager();
@@ -53,11 +53,16 @@ class EnvironmentProvider {
 
         let textureLoader = new THREE.TextureLoader(manager2);
 
+        interfaceProvider.updateMessage("Loading models", "0/12 loaded. Wait.");
+        interfaceProvider.setMessageVisibility(true);
+
         manager.onStart = function (url, itemsLoaded, itemsTotal) {
             console.log("Started loading " + url);
         };
         manager.onLoad = function () {
             console.log("Finished loading everything.");
+            interfaceProvider.updateMessage("Loading models", "Finished.");
+
             that.allModels.easyObstacles = [that.loadedObstacles.easy1, that.loadedObstacles.easy2, that.loadedObstacles.easy3, that.loadedObstacles.easy4];
             that.allModels.ships = [that.loadedShips.ship1, that.loadedShips.ship2];
 
@@ -65,6 +70,8 @@ class EnvironmentProvider {
             let shieldGeometry = new THREE.SphereGeometry(shipSize.x - 0.4, shipSize.y, shipSize.z - 0.05);
             let shieldMaterial = new THREE.MeshStandardMaterial({ color: "#5c77ff", transparent: true, side: THREE.DoubleSide, alphaTest: 0, shininess: 300, specular: 0x111111 });
             let alphaMap = null;
+
+            interfaceProvider.updateMessage("Loading textures", "0/5 loaded. Wait.");
 
             textureLoader.load('textures/shield.jpg',
 
@@ -78,6 +85,8 @@ class EnvironmentProvider {
                     let shieldMesh = new THREE.Mesh(shieldGeometry, shieldMaterial);
 
                     that.allModels.shield = shieldMesh;
+
+                    interfaceProvider.updateMessage("Loading textures", "1/4 loaded. Wait.");
             });
 
             // textureLoader.load('textures/snow.png',
@@ -106,6 +115,8 @@ class EnvironmentProvider {
                 ( texture ) => {
 
                     that.loadedTextures.brick = texture;
+
+                    interfaceProvider.updateMessage("Loading textures", "2/4 loaded. Wait.");
             });
 
             textureLoader.load('textures/gradient.png',
@@ -113,6 +124,8 @@ class EnvironmentProvider {
                 ( texture ) => {
 
                     that.loadedTextures.gradient = texture;
+
+                    interfaceProvider.updateMessage("Loading textures", "3/4 loaded. Wait.");
             });
 
             textureLoader.load('textures/glow.png',
@@ -120,6 +133,8 @@ class EnvironmentProvider {
                 ( texture ) => {
 
                     that.loadedTextures.glow = texture;
+
+                    interfaceProvider.updateMessage("Loading textures", "5/5 loaded. Wait.");
                 });
 
             // textureLoader.load('textures/polys.jpg',
@@ -129,16 +144,19 @@ class EnvironmentProvider {
             //         that.loadedTextures.polys = texture;
             // });
 
-            textureLoader.load('textures/paint-splatter-4.png',
-
-                ( texture ) => {
-
-                    that.loadedTextures.splatter4 = texture;
-                });
+            // textureLoader.load('textures/paint-splatter-4.png',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.splatter4 = texture;
+            //
+            //         interfaceProvider.updateMessage("Loading textures", "5/5 loaded. Wait.");
+            //     });
 
         };
         manager.onProgress = function (url, itemsLoaded, itemsTotal) {
             console.log("Finished " + url + ". Items loaded: " + itemsLoaded + " of total: " + itemsTotal + ".");
+            interfaceProvider.updateMessage("Loading models", itemsLoaded + "/" + itemsTotal + " loaded. Wait.");
         };
         manager.onError = function (url) {
             console.log("Error for " + url + "!");
@@ -281,7 +299,7 @@ class EnvironmentProvider {
         );
     }
 
-    loadSounds(onLoadedHandler) {
+    loadSounds(onLoadedHandler, interfaceProvider) {
 
         let that = this;
 
@@ -291,6 +309,10 @@ class EnvironmentProvider {
             console.log(err);
         };
 
+        interfaceProvider.updateMessage("Loading sounds", "0/5 loaded. Wait.");
+        interfaceProvider.setMessageVisibility(true);
+
+
         audioLoader.load(
             'sounds/engine.mp3',
 
@@ -298,6 +320,7 @@ class EnvironmentProvider {
 
                 that.allSounds.engine = buffer;
                 console.log("Engine sound");
+                interfaceProvider.updateMessage("Loading sounds", "1/5 loaded. Wait.");
 
                 audioLoader.load(
                     'sounds/flyby.mp3',
@@ -306,6 +329,7 @@ class EnvironmentProvider {
 
                         that.allSounds.flyby = buffer2;
                         console.log("Flyby sound");
+                        interfaceProvider.updateMessage("Loading sounds", "2/5 loaded. Wait.");
 
                         audioLoader.load(
                             'sounds/impact.mp3',
@@ -314,6 +338,7 @@ class EnvironmentProvider {
 
                                 that.allSounds.impact = buffer3;
                                 console.log("Impact sound");
+                                interfaceProvider.updateMessage("Loading sounds", "3/5 loaded. Wait.");
 
                                 audioLoader.load(
                                     'sounds/asimov.mp3',
@@ -322,6 +347,7 @@ class EnvironmentProvider {
 
                                         that.allSounds.music = buffer4;
                                         console.log("Music");
+                                        interfaceProvider.updateMessage("Loading sounds", "4/5 loaded. Wait.");
 
                                         audioLoader.load(
                                             'sounds/pickup.mp3',
@@ -330,6 +356,7 @@ class EnvironmentProvider {
 
                                                 that.allSounds.pickup = buffer5;
                                                 console.log("Pickup sound");
+                                                interfaceProvider.updateMessage("Loading sounds", "5/5 loaded. Wait.");
 
                                                 onLoadedHandler();
                                             },

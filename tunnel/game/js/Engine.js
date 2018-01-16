@@ -852,8 +852,8 @@ function setupScene(){
             interface.setIndicatorsVisibility(false);
             interface.setMessageVisibility(false);
             interface.setMenuVisibility(true);
-        });
-    });
+        }, interface);
+    }, interface);
 }
 
 function onDocumentMouseMove( event ) {
