@@ -19,6 +19,7 @@ document.addEventListener( 'mousedown', onMouseDown );
 document.addEventListener( 'mouseup', onMouseUp );
 // Prevents context menu from popping up, right mouse button is used for game.
 document.addEventListener('contextmenu', event => event.preventDefault());
+window.addEventListener( 'resize', onWindowResize, false );
 
 var tubes = [];
 var mainTube = null;
@@ -891,6 +892,15 @@ function setupPosprocessing(){
     glitchPass.renderToScreen = true;
     glitchPass.shouldGlitch = false;
     composer.addPass(glitchPass);
+}
+
+function onWindowResize(){
+
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
 }
 
 setupPosprocessing();

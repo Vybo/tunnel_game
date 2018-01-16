@@ -64,11 +64,11 @@ class Interface {
     }
 
     updateHighscore(score) {
-        this.highscore.text(score + " m");
+        this.highscore.text(score + " pts");
     }
 
     updateCurrentScore(score) {
-        this.currentScore.text(score.toFixed(2) + " m");
+        this.currentScore.text(score.toFixed(2) + " pts");
     }
 
     updateSpeed(speed) {
