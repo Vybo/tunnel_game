@@ -280,7 +280,7 @@ function updatePositions() {
         distance += 0.277778 * defaultSpeed * difficulty;
 
         if (shieldActive) {
-            shieldPower -= 0.1;
+            shieldPower -= 0.5;
 
             if (shieldPower < 0) {
                 setShieldActive(false);
@@ -409,7 +409,7 @@ function regenerateObstacles() {
 
         let obstacleSound = new THREE.PositionalAudio(cameraAudioListener);
         obstacleSound.setBuffer(environmentProvider.flybySound());
-        obstacleSound.setVolume(0.8);
+        obstacleSound.setVolume(0.5);
         obstacle.add(obstacleSound);
 
         obstacles.push(obstacle);
@@ -836,7 +836,7 @@ function setupScene(){
 
             gameMusic = new THREE.Audio(cameraAudioListener);
             gameMusic.setBuffer(environmentProvider.music());
-            gameMusic.setVolume(0.1);
+            gameMusic.setVolume(0.2);
             gameMusic.setLoop(true);
             // scene.add(gameMusic);
 
