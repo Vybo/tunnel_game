@@ -324,7 +324,7 @@ class EnvironmentProvider {
                                         console.log("Music");
 
                                         audioLoader.load(
-                                            'sounds/pickup.wav',
+                                            'sounds/pickup.mp3',
 
                                             function ( buffer5 ) {
 

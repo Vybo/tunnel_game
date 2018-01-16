@@ -166,8 +166,8 @@ function checkCollision() {
             console.log("Picked up arrow.");
             interface.flashMessage("Picked up bonus", "Brake power!");
 
-            if (arrowsCollisions[0].children.length > 0) {
-                let audio = arrowsCollisions[0].children[0];
+            if (arrowsCollisions[0].object.parent.children.length > 0) {
+                let audio = arrowsCollisions[0].object.parent.children[arrowsCollisions[0].object.parent.children.length - 1];
                 audio.play();
             }
 
@@ -186,8 +186,8 @@ function checkCollision() {
             console.log("Picked up shield.");
             interface.flashMessage("Picked up bonus", "Shield power!");
 
-            if (shieldsCollisions[0].children.length > 0) {
-                let audio = shieldsCollisions[0].children[0];
+            if (shieldsCollisions[0].object.parent.children.length > 0) {
+                let audio = shieldsCollisions[0].object.parent.children[shieldsCollisions[0].object.parent.children.length - 1];
                 audio.play();
             }
 
@@ -206,8 +206,8 @@ function checkCollision() {
             console.log("Picked up coin.");
             interface.flashMessage("Picked up bonus", "400 points!");
 
-            if (starsCollisions[0].children.length > 0) {
-                let audio = starsCollisions[0].children[0];
+            if (starsCollisions[0].object.parent.children.length > 0) {
+                let audio = starsCollisions[0].object.parent.children[starsCollisions[0].object.parent.children.length - 1];
                 audio.play();
             }
 
@@ -454,7 +454,7 @@ function regenerateBonuses() {
 
         let shieldSound = new THREE.PositionalAudio(cameraAudioListener);
         shieldSound.setBuffer(environmentProvider.pickupSound());
-        shieldSound.setVolume(0.4);
+        shieldSound.setVolume(1.0);
         shield.add(shieldSound);
 
         bonuses.shields.push(shield);
@@ -474,7 +474,7 @@ function regenerateBonuses() {
 
         let starSound = new THREE.PositionalAudio(cameraAudioListener);
         starSound.setBuffer(environmentProvider.pickupSound());
-        starSound.setVolume(0.4);
+        starSound.setVolume(1.0);
         star.add(starSound);
 
         bonuses.stars.push(star);
@@ -494,7 +494,7 @@ function regenerateBonuses() {
 
         let arrowSound = new THREE.PositionalAudio(cameraAudioListener);
         arrowSound.setBuffer(environmentProvider.pickupSound());
-        arrowSound.setVolume(0.4);
+        arrowSound.setVolume(1.0);
         arrow.add(arrowSound);
 
         bonuses.arrows.push(arrow);
@@ -836,7 +836,7 @@ function setupScene(){
 
             gameMusic = new THREE.Audio(cameraAudioListener);
             gameMusic.setBuffer(environmentProvider.music());
-            gameMusic.setVolume(0.4);
+            gameMusic.setVolume(0.1);
             gameMusic.setLoop(true);
             // scene.add(gameMusic);
 
