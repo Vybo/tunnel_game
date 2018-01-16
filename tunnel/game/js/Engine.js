@@ -3,7 +3,6 @@ const maxLights = 16;
 var mousePosition = new THREE.Vector2(0,0);
 var difficulty = 1.0;
 var defaultSpeed = 0.05;
-var numberOfCollisions = 0;
 const tubeDiameter = 5.0;
 const lightsSpacing = 20.0;
 var firstPerson = false;
@@ -18,18 +17,19 @@ var speed = 0;
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 document.addEventListener( 'mousedown', onMouseDown );
 document.addEventListener( 'mouseup', onMouseUp );
-document.addEventListener('contextmenu', event => event.preventDefault()); // Prevents context menu from popping up, right mouse button is used for game.
+// Prevents context menu from popping up, right mouse button is used for game.
+document.addEventListener('contextmenu', event => event.preventDefault());
 
 var tubes = [];
 var mainTube = null;
 var obstacles = [];
 var lights = [];
+
 var bonuses = {
     shields: [],
     stars: [],
     arrows:[]
-}
-var obstacleRotationMultipliers = [];
+};
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -147,6 +147,7 @@ function checkCollision() {
     }
 
     if (isRunning) {
+
         let caster = new THREE.Raycaster();
         let ray = new THREE.Vector3(0, 0, -(defaultSpeed * difficulty));
         let maxDistance = 0.0;
@@ -155,33 +156,60 @@ function checkCollision() {
         let arrowsCollisions = caster.intersectObjects(bonuses.arrows, true);
 
         if (arrowsCollisions.length > 0 && arrowsCollisions[0].distance <= maxDistance) {
+
             brakePower = brakePower + 40 > 100 ? 100 : brakePower + 40;
+
             removeMeshFromSceneAndArray(arrowsCollisions[0], bonuses.arrows);
             blinkLightsRed(1, function () {});
+
             console.log("Picked up arrow.");
             interface.flashMessage("Picked up bonus", "Brake power!");
+
+            if (arrowsCollisions[0].children.length > 0) {
+                let audio = arrowsCollisions[0].children[0];
+                audio.play();
+            }
+
             return;
         }
 
         let shieldsCollisions = caster.intersectObjects(bonuses.shields, true);
 
         if (shieldsCollisions.length > 0 && shieldsCollisions[0].distance <= maxDistance) {
+
             shieldPower = shieldPower + 20 > 100 ? 100 : shieldPower + 20;
+
             removeMeshFromSceneAndArray(shieldsCollisions[0], bonuses.shields);
             blinkLightsBlue(1, function () {});
+
             console.log("Picked up shield.");
             interface.flashMessage("Picked up bonus", "Shield power!");
+
+            if (shieldsCollisions[0].children.length > 0) {
+                let audio = shieldsCollisions[0].children[0];
+                audio.play();
+            }
+
             return;
         }
 
         let starsCollisions = caster.intersectObjects(bonuses.stars, true);
 
         if (starsCollisions.length > 0 && starsCollisions[0].distance <= maxDistance) {
+
             distance += 400;
+
             removeMeshFromSceneAndArray(starsCollisions[0], bonuses.stars);
             blinkLightsGreen(1, function () {});
+
             console.log("Picked up coin.");
             interface.flashMessage("Picked up bonus", "400 points!");
+
+            if (starsCollisions[0].children.length > 0) {
+                let audio = starsCollisions[0].children[0];
+                audio.play();
+            }
+
             return;
         }
     }
@@ -203,6 +231,7 @@ function updateHighscore(score) {
 }
 
 function reset() {
+
     setScreenGlitch(false);
     difficulty = 1.0;
     particleSystem1Options.velocity.z = 1;
@@ -367,15 +396,6 @@ function regenerateObstacles() {
 
     for (i = 0; i < obstaclesToGenerate; i++) {
 
-        // Code used to generate random cubes as obstacles instead of models.
-
-        // let cube = GeometryGenerators.cube();
-        // cube.position.z = GeometryGenerators.randomFloat(-20, -100);
-        // cube.position.x = GeometryGenerators.randomFloat(-4, 4);
-        // cube.position.y = GeometryGenerators.randomFloat(-4, 4);
-        // obstacles.push(cube);
-        // scene.add(cube);
-
         let obstacle = environmentProvider.easyObstacle();
 
         let furthestObject = obstacles.reduce(function(prev, current) {
@@ -407,7 +427,7 @@ function regenerateBonuses() {
 
     let shieldsToGenerate = 4 - bonuses.shields.length;
     let starsToGenerate = 10 - bonuses.stars.length;
-    let arrowsToGenerate = 4 - bonuses.arrows.length;
+    let arrowsToGenerate = 6 - bonuses.arrows.length;
 
     let furthestShield = bonuses.shields.reduce(function(prev, current) {
         return (prev.position.z < current.position.z) ? prev : current
@@ -431,6 +451,11 @@ function regenerateBonuses() {
 
         shield.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
 
+        let shieldSound = new THREE.PositionalAudio(cameraAudioListener);
+        shieldSound.setBuffer(environmentProvider.pickupSound());
+        shieldSound.setVolume(0.4);
+        shield.add(shieldSound);
+
         bonuses.shields.push(shield);
 
         scene.add(shield);
@@ -446,6 +471,11 @@ function regenerateBonuses() {
 
         star.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
 
+        let starSound = new THREE.PositionalAudio(cameraAudioListener);
+        starSound.setBuffer(environmentProvider.pickupSound());
+        starSound.setVolume(0.4);
+        star.add(starSound);
+
         bonuses.stars.push(star);
 
         scene.add(star);
@@ -460,6 +490,11 @@ function regenerateBonuses() {
         arrow.position.y = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
 
         arrow.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
+
+        let arrowSound = new THREE.PositionalAudio(cameraAudioListener);
+        arrowSound.setBuffer(environmentProvider.pickupSound());
+        arrowSound.setVolume(0.4);
+        arrow.add(arrowSound);
 
         bonuses.arrows.push(arrow);
 

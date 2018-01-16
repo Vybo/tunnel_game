@@ -440,6 +440,10 @@ class EnvironmentProvider {
         return this.allSounds.impact;
     }
 
+    pickupSound() {
+        return this.allSounds.pickup;
+    }
+
     putGlowOnMesh(mesh, scale, color) {
         // SUPER SIMPLE GLOW EFFECT
         // use sprite because it appears the same from all angles
