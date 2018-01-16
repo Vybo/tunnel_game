@@ -10,18 +10,25 @@ var firstPerson = false;
 var cameraMovementMultiplier = 1.0;
 var tick = 0;
 
-var shieldPower = 100;
-var brake = 100;
+var shieldPower = 10;
+var brakePower = 0;
 var distance = 0;
 var speed = 0;
 
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 document.addEventListener( 'mousedown', onMouseDown );
 document.addEventListener( 'mouseup', onMouseUp );
+document.addEventListener('contextmenu', event => event.preventDefault()); // Prevents context menu from popping up, right mouse button is used for game.
 
 var tubes = [];
+var mainTube = null;
 var obstacles = [];
 var lights = [];
+var bonuses = {
+    shields: [],
+    stars: [],
+    arrows:[]
+}
 var obstacleRotationMultipliers = [];
 
 var scene = new THREE.Scene();
@@ -56,9 +63,11 @@ var interface = new Interface();
 var storage = new Storage();
 
 var shieldActive = false;
+var brakeActive = false;
 
 var impactSound = null;
 var engineSound = null;
+var gameMusic = null;
 
 function animate() {
 
@@ -71,6 +80,7 @@ function animate() {
 
     regenerateLights();
     regenerateObstacles();
+    regenerateBonuses();
     updateCameraPosition();
 
     adjustDifficulty();
@@ -87,16 +97,31 @@ function animate() {
 }
 
 function adjustDifficulty() {
-    difficulty += 0.01;
-    if (isRunning) particleSystem1Options.velocity.z = (difficulty - 1.0) * 0.5;
 
-    tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b - 0.0001 : 0;
-    tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g - 0.0001 : 0;
+    if (brakeActive) {
 
-    adjustAudioPlaybackSpeed(difficulty / 10);
+        difficulty -= 0.05;
+        if (isRunning) particleSystem1Options.velocity.z = (difficulty - 1.0) * 0.5 * -1;
+
+        tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b + 0.0001 : 0;
+        tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g + 0.0001 : 0;
+
+        adjustAudioPlaybackSpeed(difficulty / 10);
+
+    } else {
+
+        difficulty += 0.01;
+        if (isRunning) particleSystem1Options.velocity.z = (difficulty - 1.0) * 0.5;
+
+        tubeLightsColor.b = tubeLightsColor.b > 0 ? tubeLightsColor.b - 0.0001 : 0;
+        tubeLightsColor.g = tubeLightsColor.g > 0 ? tubeLightsColor.g - 0.0001 : 0;
+
+        adjustAudioPlaybackSpeed(difficulty / 10);
+    }
 }
 
 function checkCollision() {
+
     if (isRunning && !shieldActive) {
         let caster = new THREE.Raycaster();
         let ray = new THREE.Vector3(0, 0, -(defaultSpeed * difficulty));
@@ -120,6 +145,57 @@ function checkCollision() {
             });
         }
     }
+
+    if (isRunning) {
+        let caster = new THREE.Raycaster();
+        let ray = new THREE.Vector3(0, 0, -(defaultSpeed * difficulty));
+        let maxDistance = 0.0;
+
+        caster.set(player.position, ray);
+        let arrowsCollisions = caster.intersectObjects(bonuses.arrows, true);
+
+        if (arrowsCollisions.length > 0 && arrowsCollisions[0].distance <= maxDistance) {
+            brakePower = brakePower + 40 > 100 ? 100 : brakePower + 40;
+            removeMeshFromSceneAndArray(arrowsCollisions[0], bonuses.arrows);
+            blinkLightsRed(1, function () {});
+            console.log("Picked up arrow.");
+            interface.flashMessage("Picked up bonus", "Brake power!");
+            return;
+        }
+
+        let shieldsCollisions = caster.intersectObjects(bonuses.shields, true);
+
+        if (shieldsCollisions.length > 0 && shieldsCollisions[0].distance <= maxDistance) {
+            shieldPower = shieldPower + 20 > 100 ? 100 : shieldPower + 20;
+            removeMeshFromSceneAndArray(shieldsCollisions[0], bonuses.shields);
+            blinkLightsBlue(1, function () {});
+            console.log("Picked up shield.");
+            interface.flashMessage("Picked up bonus", "Shield power!");
+            return;
+        }
+
+        let starsCollisions = caster.intersectObjects(bonuses.stars, true);
+
+        if (starsCollisions.length > 0 && starsCollisions[0].distance <= maxDistance) {
+            distance += 400;
+            removeMeshFromSceneAndArray(starsCollisions[0], bonuses.stars);
+            blinkLightsGreen(1, function () {});
+            console.log("Picked up coin.");
+            interface.flashMessage("Picked up bonus", "400 points!");
+            return;
+        }
+    }
+}
+
+function removeMeshFromSceneAndArray(objectToRemove, array) {
+
+    array.forEach( function(object, index, array) {
+        if (objectToRemove.id == object.id || objectToRemove.object.parent.id == object.id) {
+
+            array.splice(index, 1);
+            scene.remove(object);
+        }
+    });
 }
 
 function updateHighscore(score) {
@@ -140,6 +216,8 @@ function reset() {
     tubeLightsColor.g = 1;
 
     distance = 0;
+    brakePower = 10;
+    shieldPower = 50;
     // isRunning = true;
     setRunning(true);
 }
@@ -156,6 +234,18 @@ function updatePositions() {
             object.position.z += defaultSpeed * difficulty;
         });
 
+        bonuses.shields.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+
+        bonuses.arrows.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+
+        bonuses.stars.forEach(function (object) {
+            object.position.z += defaultSpeed * difficulty;
+        });
+
         speed = 0.277778 * defaultSpeed * difficulty * 100;
         distance += 0.277778 * defaultSpeed * difficulty;
 
@@ -166,6 +256,16 @@ function updatePositions() {
                 setShieldActive(false);
             }
         }
+
+        if (brakeActive) {
+            brakePower -= 0.5;
+
+            if (brakePower < 0) {
+                setBrakeActive(false);
+            }
+        }
+
+        mainTube.material.map.offset.x -= (defaultSpeed * difficulty) / 20;
     }
 }
 
@@ -175,12 +275,24 @@ function updateRotations() {
         object.rotation.y += object.rotationCoefficient + (difficulty / 1000);
     });
 
+    bonuses.shields.forEach( function(object) {
+        object.rotation.y += 0.1;
+    });
+
+    bonuses.stars.forEach( function(object) {
+        object.rotation.y += 0.1;
+    });
+
+    bonuses.arrows.forEach( function(object) {
+        object.rotation.y += 0.1;
+    });
+
     if (shieldActive) {
         shield.material.alphaMap.offset.y = tick;
     }
 }
 
-const bugfixmodifier = 0.6;
+const bugfixmodifier = 0.7;
 
 function updateCameraPosition() { // Refactor to updatePlayer
 
@@ -223,6 +335,7 @@ function updateInterfaceValues() {
     interface.updateDistance(distance);
     interface.updateSpeed(speed);
     interface.updateShield(shieldPower);
+    interface.updateBrake(brakePower);
 }
 
 function updateMenuValues() {
@@ -240,6 +353,10 @@ function setShieldActive(active) {
         retractShield( function () { shield.visible = false; })
     }
 
+}
+
+function setBrakeActive(active) {
+    brakeActive = active;
 }
 
 function regenerateObstacles() {
@@ -280,6 +397,76 @@ function regenerateObstacles() {
     }
 }
 
+var bonusesSpread = 3.0;
+
+function regenerateBonuses() {
+
+    clearObjectsBehindPlayer(bonuses.arrows, 0.5, false);
+    clearObjectsBehindPlayer(bonuses.shields, 0.5, false);
+    clearObjectsBehindPlayer(bonuses.stars, 0.5, false);
+
+    let shieldsToGenerate = 4 - bonuses.shields.length;
+    let starsToGenerate = 10 - bonuses.stars.length;
+    let arrowsToGenerate = 4 - bonuses.arrows.length;
+
+    let furthestShield = bonuses.shields.reduce(function(prev, current) {
+        return (prev.position.z < current.position.z) ? prev : current
+    }, environmentProvider.bonusShield());
+
+    let furthestStar = bonuses.stars.reduce(function(prev, current) {
+        return (prev.position.z < current.position.z) ? prev : current
+    }, environmentProvider.bonusStar());
+
+    let furthestArrow = bonuses.arrows.reduce(function(prev, current) {
+        return (prev.position.z < current.position.z) ? prev : current
+    }, environmentProvider.bonusBrake());
+
+    for (i = 0; i < shieldsToGenerate; i++) {
+
+        let shield = environmentProvider.bonusShield();
+
+        shield.position.z = GeometryGenerators.randomFloat(furthestShield.position.z - 4, furthestShield.position.z - 100);
+        shield.position.x = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+        shield.position.y = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+
+        shield.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
+
+        bonuses.shields.push(shield);
+
+        scene.add(shield);
+    }
+
+    for (i = 0; i < starsToGenerate; i++) {
+
+        let star = environmentProvider.bonusStar();
+
+        star.position.z = GeometryGenerators.randomFloat(furthestStar.position.z - 4, furthestStar.position.z - 100);
+        star.position.x = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+        star.position.y = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+
+        star.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
+
+        bonuses.stars.push(star);
+
+        scene.add(star);
+    }
+
+    for (i = 0; i < arrowsToGenerate; i++) {
+
+        let arrow = environmentProvider.bonusBrake();
+
+        arrow.position.z = GeometryGenerators.randomFloat(furthestArrow.position.z - 4, furthestArrow.position.z - 100);
+        arrow.position.x = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+        arrow.position.y = GeometryGenerators.randomFloat(-bonusesSpread, bonusesSpread);
+
+        arrow.rotation.y = GeometryGenerators.randomFloat(0, Math.PI);
+
+        bonuses.arrows.push(arrow);
+
+        scene.add(arrow);
+    }
+}
+
 function adjustAudioPlaybackSpeed(modifier) {
 
     impactSound.setPlaybackRate(1.0 - modifier / 100);
@@ -311,12 +498,13 @@ function regenerateLights() {
     let diameterletoff = 0.3;
     for (i = 0; i <= lightsToGenerate; i++) {
 
-        let light1 = new THREE.PointLight( tubeLightsColor, 0.3, 30 );
+        let light1 = new THREE.PointLight( tubeLightsColor, 0.3, 25 );
         light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: tubeLightsColor } ) ) );
         light1.position.x = Math.cos(90) * (tubeDiameter- diameterletoff);
         light1.position.y = Math.sin(90) * (tubeDiameter- diameterletoff);
         light1.position.z = furthestDistance - lightsSpacing;
         furthestDistance += lightsSpacing;
+        environmentProvider.putGlowOnMesh(light1, new THREE.Vector3(1.1,1.1,1.1), 0x555555);
         lights.push(light1);
         scene.add(light1);
     }
@@ -380,6 +568,52 @@ function blinkLightsRed(times, onFinished) {
         });
 }
 
+function blinkLightsGreen(times, onFinished) {
+    var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
+    lightsBlinkingTween = new TWEEN.Tween(colorValues)
+        .to({r: 0.0, b: 0.0, g: 1.0 }, 500)
+        .easing(TWEEN.Easing.Quartic.InOut)
+        .onUpdate( function() {
+            tubeLightsColor.r = colorValues.r;
+            tubeLightsColor.g = colorValues.g;
+            tubeLightsColor.b = colorValues.b;
+            setLightsColor(tubeLightsColor);
+        })
+        .yoyo(true).repeat(times)
+        .start()
+        .onComplete(function() {
+            tubeLightsColor.r = 1.0;
+            tubeLightsColor.b = 1.0;
+            tubeLightsColor.g = 1.0;
+            setLightsColor(tubeLightsColor);
+
+            onFinished();
+        });
+}
+
+function blinkLightsBlue(times, onFinished) {
+    var colorValues = {r: 1.0, b: 1.0, g: 1.0 };
+    lightsBlinkingTween = new TWEEN.Tween(colorValues)
+        .to({r: 0.0, b: 1.0, g: 0.0 }, 500)
+        .easing(TWEEN.Easing.Quartic.InOut)
+        .onUpdate( function() {
+            tubeLightsColor.r = colorValues.r;
+            tubeLightsColor.g = colorValues.g;
+            tubeLightsColor.b = colorValues.b;
+            setLightsColor(tubeLightsColor);
+        })
+        .yoyo(true).repeat(times)
+        .start()
+        .onComplete(function() {
+            tubeLightsColor.r = 1.0;
+            tubeLightsColor.b = 1.0;
+            tubeLightsColor.g = 1.0;
+            setLightsColor(tubeLightsColor);
+
+            onFinished();
+        });
+}
+
 function expandShield(onFinished) {
     var scale = new THREE.Vector3(0.1, 0.1, 0.1);
 
@@ -420,28 +654,26 @@ function retractShield(onFinished) {
 
 function adjustEngineSoundSpeed(desiredRate, onComplete) {
 
-    let currentRate = engineSound.playbackRate;
-
-    // engineSound.stop();
-
     engineSound.setPlaybackRate(desiredRate);
+}
 
-    // engineSound.play();
-    //
-    // let engineSoundTween = new TWEEN.Tween(currentRate)
-    //     .to(desiredRate, 500)
-    //     .easing(TWEEN.Easing.Quartic.InOut)
-    //     .onUpdate( function() {
-    //         engineSound.setPlaybackRate(currentRate)
-    //     })
-    //     .start()
-    //     .onComplete(function () {
-    //         if (onComplete === undefined) {
-    //             return;
-    //         } else {
-    //             onComplete();
-    //         }
-    //     });
+function playMusic(fromBeginning) {
+    if (gameMusic != null) {
+        gameMusic.pause();
+    }
+
+    let playbackStart = 0;
+    if (!fromBeginning) {
+        playbackStart = Math.floor(GeometryGenerators.randomFloat(0, 360));
+    }
+
+    gameMusic.offset = playbackStart;
+
+    gameMusic.play();
+}
+
+function stopMusic() {
+    gameMusic.stop();
 }
 
 function setupPlayer() {
@@ -488,6 +720,7 @@ function setupPlayer() {
     shield = environmentProvider.shield();
     scene.add(shield);
     setShieldActive(false);
+    setBrakeActive(false);
 
     cameraAudioListener = new THREE.AudioListener();
     camera.add(cameraAudioListener);
@@ -500,6 +733,7 @@ function setRunning(running) {
         interface.setIndicatorsVisibility(true);
         interface.setMenuVisibility(false);
         engineSound.play();
+        playMusic(false);
 
     } else {
         isRunning = false;
@@ -512,6 +746,7 @@ function setRunning(running) {
 
         adjustEngineSoundSpeed(0.3);
         engineSound.stop();
+        stopMusic();
 
         updateMenuValues();
     }
@@ -520,9 +755,10 @@ function setRunning(running) {
 function setupScene(){
     interface.setLoadingVisibility(true);
     interface.setIndicatorsVisibility(false);
+    interface.setMessageVisibility(false);
     interface.setMenuVisibility(false);
 
-    let light = new THREE.AmbientLight( 0x555555 );
+    let light = new THREE.AmbientLight( 0x444444 );
     scene.add(light);
 
     pointLight = new THREE.SpotLight( 0xffffff, 1, 200, 0.5, 0.5, 1 );
@@ -539,11 +775,17 @@ function setupScene(){
         scene.add(tube);
     });
 
+    if (tubes.length > 0) {
+        mainTube = tubes[0];
+    }
+
     environmentProvider.loadModels( function(){
 
         environmentProvider.loadSounds( function () {
 
             setupPlayer();
+
+            environmentProvider.texturedTube(tube, environmentProvider.loadedTextures.gradient);
 
             let impactS = new THREE.Audio(cameraAudioListener);
             impactS.setBuffer(environmentProvider.impactSound());
@@ -552,9 +794,15 @@ function setupScene(){
 
             engineSound = new THREE.PositionalAudio(cameraAudioListener);
             engineSound.setBuffer(environmentProvider.engineSound());
-            engineSound.setVolume(0.4);
+            engineSound.setVolume(0.5);
             engineSound.setLoop(true);
             player.add(engineSound);
+
+            gameMusic = new THREE.Audio(cameraAudioListener);
+            gameMusic.setBuffer(environmentProvider.music());
+            gameMusic.setVolume(0.4);
+            gameMusic.setLoop(true);
+            // scene.add(gameMusic);
 
             animate();
 
@@ -566,6 +814,7 @@ function setupScene(){
 
             interface.setLoadingVisibility(false);
             interface.setIndicatorsVisibility(false);
+            interface.setMessageVisibility(false);
             interface.setMenuVisibility(true);
         });
     });
@@ -582,7 +831,9 @@ function onMouseDown ( e ) {
             setShieldActive(true);
         }
     } else if (e.which === 3) {
-        /*Right Mouse*/
+        if (isRunning) {
+            setBrakeActive(true);
+        }
     }
 }
 
@@ -592,7 +843,9 @@ function onMouseUp ( e ) {
             setShieldActive(false);
         }
     } else if (e.which === 3) {
-        /*Right Mouse*/
+        if (isRunning) {
+            setBrakeActive(false);
+        }
     }
 }
 

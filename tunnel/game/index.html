@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" type="text/css" href="css/spinkit.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.css">
 
 </head>
 <body>
@@ -44,11 +45,11 @@
         <div class="menu-content">
             <h1>Tunnel</h1>
 
-            <h2>Longest distance</h2>
-            <h3 class="highscore">0 m</h3>
+            <h2>Highest score</h2>
+            <h3 class="highscore">0 pts</h3>
 
-            <h2>Current distance</h2>
-            <h3 class="currentscore">0 m</h3>
+            <h2>Current score</h2>
+            <h3 class="currentscore">0 pts</h3>
 
             <section class="border"">
                 <button class="startButton">Start</button>
@@ -56,9 +57,21 @@
         </div>
     </div>
 
+    <div class="message">
+        <div class="message-content">
+            <h3 class="message-first">Picked up</h3>
+            <h2 class="message-second">bonus!</h2>
+        </div>
+    </div>
+
 
 <script src="js/jquery-3.2.1.js"></script>
+<script src="js/jquery.fittext.js"></script>
+<script src="js/jquery.lettering.js"></script>
+<script src="js/jquery.textillate.js"></script>
+
 <script src="js/three.js"></script>
+    <script src="js/DecalGeometry.js"></script>
 <script src="js/MTLLoader.js"></script>
 <script src="js/OBJLoader.js"></script>
 <script src="js/GPUParticleSystem.js"></script>

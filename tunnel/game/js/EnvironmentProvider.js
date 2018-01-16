@@ -20,15 +20,29 @@ class EnvironmentProvider {
             easyObstacles: null,
             ships: null,
             shield: null,
-            shieldBonus: null,
-            starBonus: null
+            bonusShield: null,
+            bonusStar: null,
+            bonusBrake: null
         };
 
         this.allSounds = {
             engine: null,
             flyby: null,
-            impact: null
+            impact: null,
+            pickup: null,
+            music: null
         };
+
+        this.loadedTextures = {
+            concrete: null,
+            nebula: null,
+            snow: null,
+            brick: null,
+            polys: null,
+            splatter4: null,
+            gradient: null,
+            glow: null
+        }
     }
 
     loadModels(onLoadedHandler) {
@@ -64,6 +78,62 @@ class EnvironmentProvider {
                     let shieldMesh = new THREE.Mesh(shieldGeometry, shieldMaterial);
 
                     that.allModels.shield = shieldMesh;
+            });
+
+            // textureLoader.load('textures/snow.png',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.snow = texture;
+            // });
+            //
+            // textureLoader.load('textures/nebula.jpg',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.nebula = texture;
+            // });
+            //
+            // textureLoader.load('textures/concrete.jpg',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.concrete = texture;
+            // });
+
+            textureLoader.load('textures/stone.jpg',
+
+                ( texture ) => {
+
+                    that.loadedTextures.brick = texture;
+            });
+
+            textureLoader.load('textures/gradient.png',
+
+                ( texture ) => {
+
+                    that.loadedTextures.gradient = texture;
+            });
+
+            textureLoader.load('textures/glow.png',
+
+                ( texture ) => {
+
+                    that.loadedTextures.glow = texture;
+                });
+
+            // textureLoader.load('textures/polys.jpg',
+            //
+            //     ( texture ) => {
+            //
+            //         that.loadedTextures.polys = texture;
+            // });
+
+            textureLoader.load('textures/paint-splatter-4.png',
+
+                ( texture ) => {
+
+                    that.loadedTextures.splatter4 = texture;
                 });
 
         };
@@ -99,35 +169,37 @@ class EnvironmentProvider {
             }
         );
 
+        // mtlLoader.load(
+        //     'models/ship02.mtl',
+        //
+        //     ( materials ) => {
+        //         materials.preload();
+        //         objLoader.setMaterials(materials);
+        //
+        //         objLoader.load(
+        //             'models/ship02.obj',
+        //
+        //             ( object ) => {
+        //                 this.loadedShips.ship2 = object;
+        //             }
+        //         );
+        //     }
+        // );
+
         mtlLoader.load(
-            'models/ship02.mtl',
+            'models/arrow.mtl',
 
             ( materials ) => {
                 materials.preload();
+
+                objLoader = new THREE.OBJLoader(manager);
                 objLoader.setMaterials(materials);
 
                 objLoader.load(
-                    'models/ship02.obj',
+                    'models/arrow.obj',
 
                     ( object ) => {
-                        this.loadedShips.ship2 = object;
-                    }
-                );
-            }
-        );
-
-        mtlLoader.load(
-            'models/star.mtl',
-
-            ( materials ) => {
-                materials.preload();
-                objLoader.setMaterials(materials);
-
-                objLoader.load(
-                    'models/star.obj',
-
-                    ( object ) => {
-                        this.allModels.starBonus = object;
+                        this.allModels.bonusBrake = object;
                     }
                 );
             }
@@ -138,15 +210,29 @@ class EnvironmentProvider {
 
             ( materials ) => {
                 materials.preload();
+
+                objLoader = new THREE.OBJLoader(manager);
                 objLoader.setMaterials(materials);
 
                 objLoader.load(
                     'models/shield.obj',
 
                     ( object ) => {
-                        this.allModels.shieldBonus = object;
+                        this.allModels.bonusShield = object;
                     }
                 );
+            }
+        );
+
+        objLoader = new THREE.OBJLoader(manager);
+
+        objLoader.load(
+            'models/coin.obj',
+
+            ( object ) => {
+                let material = new THREE.MeshPhongMaterial( { color: 0x00FF00, shininess: 300, specular: 0x111111 } );
+                object.material = material;
+                this.allModels.bonusStar = object;
             }
         );
 
@@ -229,7 +315,32 @@ class EnvironmentProvider {
                                 that.allSounds.impact = buffer3;
                                 console.log("Impact sound");
 
-                                onLoadedHandler();
+                                audioLoader.load(
+                                    'sounds/asimov.mp3',
+
+                                    function ( buffer4 ) {
+
+                                        that.allSounds.music = buffer4;
+                                        console.log("Music");
+
+                                        audioLoader.load(
+                                            'sounds/pickup.wav',
+
+                                            function ( buffer5 ) {
+
+                                                that.allSounds.pickup = buffer5;
+                                                console.log("Pickup sound");
+
+                                                onLoadedHandler();
+                                            },
+                                            null,
+                                            audioErrorFunction
+                                        );
+                                    },
+                                    null,
+                                    audioErrorFunction
+                                );
+
                             },
                             null,
                             audioErrorFunction
@@ -248,13 +359,55 @@ class EnvironmentProvider {
     easyObstacle() {
         let model = this.randomObject(this.allModels.easyObstacles);
         let obstacle = model.clone();
-        obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 50, specular: 0x111111 } );
-        obstacle.material.flatShading = EnvironmentProvider.flatShading();
+
         let scale = 0.1 + tubeDiameter;
         obstacle.scale.set(scale, scale, scale);
         obstacle.rotation.x = Math.PI / 2;
         obstacle.rotation.y += GeometryGenerators.randomFloat(0, Math.PI / 2);
         obstacle.position.z = -1; // Default distance when generated, used by reduce function in engine.
+
+        // obstacle.material = new THREE.MeshBasicMaterial({
+        //     side: THREE.FrontSide,
+        //     map: this.loadedTextures.brick.clone()
+        // });
+
+        obstacle.material = new THREE.MeshPhongMaterial( { color: GeometryGenerators.randomColor(), shininess: 50, specular: 0x111111 } );
+
+        // obstacle.material.flatShading = EnvironmentProvider.flatShading();
+        //
+        // // obstacle.material.map = this.loadedTextures.brick.clone();
+        // obstacle.material.map.wrapS = THREE.ClampToEdgeWrapping;
+        // // obstacle.material.map.wrapT = THREE.ClampToEdgeWrapping;
+        // obstacle.material.map.repeat.set(1, 1);
+
+        // let params = {
+        //     minScale: scale,
+        //     maxScale: 2*scale,
+        //     rotate: true
+        // };
+        //
+        // let decalMaterial = new THREE.MeshPhongMaterial( {
+        //     specular: 0x444444,
+        //     map: this.loadedTextures.splatter4,
+        //     shininess: 30,
+        //     transparent: true,
+        //     depthTest: true,
+        //     depthWrite: false,
+        //     wireframe: false,
+        //     color: GeometryGenerators.randomColor()
+        // } );
+        //
+        // let randomScale = params.minScale + Math.random() * ( params.maxScale - params.minScale );
+        // let position = new THREE.Vector3(0,0,0);
+        // let orientation = new THREE.Vector3(0,0,0);
+        // let size = new THREE.Vector3(randomScale, randomScale, randomScale);
+
+        // let splatteredObstacle = new THREE.Mesh( new THREE.DecalGeometry( obstacle, position, orientation, size ), decalMaterial );
+        // splatteredObstacle.rotation.x = Math.PI / 2;
+        // splatteredObstacle.rotation.y += GeometryGenerators.randomFloat(0, Math.PI / 2);
+        // splatteredObstacle.scale.set(scale, scale, scale);
+
+        // return splatteredObstacle;
         return obstacle;
     }
 
@@ -267,22 +420,8 @@ class EnvironmentProvider {
         ship.scale.set(0.002, 0.002, 0.002);
         ship.position.set(0, 0, 0);
         ship.rotateY(Math.PI);
-        ship.children[0].material.forEach(function(material) { material.shininess = 500; material.flatShading = EnvironmentProvider.flatShading(); });
+        ship.children[0].material.forEach(function(material) { material.shininess = 500; });
         return ship;
-    }
-
-    shieldBonus() {
-        let model = this.allModels.shieldBonus.clone();
-        return model;
-    }
-
-    starBonus() {
-        let model = this.allModels.starBonus.clone();
-        return model;
-    }
-
-    shield() {
-        return this.allModels.shield;
     }
 
     flybySound() {
@@ -293,7 +432,79 @@ class EnvironmentProvider {
         return this.allSounds.engine;
     }
 
+    music() {
+        return this.allSounds.music;
+    }
+
     impactSound() {
         return this.allSounds.impact;
+    }
+
+    putGlowOnMesh(mesh, scale, color) {
+        // SUPER SIMPLE GLOW EFFECT
+        // use sprite because it appears the same from all angles
+
+        let spriteMaterial = new THREE.SpriteMaterial({
+                map: this.loadedTextures.glow,
+                color: color,
+                transparent: false,
+                blending: THREE.AdditiveBlending
+        });
+
+        let sprite = new THREE.Sprite( spriteMaterial );
+        sprite.scale.set(scale.x, scale.y, 1.0);
+
+        mesh.add(sprite); // this centers the glow at the mesh
+    }
+
+    shield() {
+        let shield = this.allModels.shield.clone();
+        this.putGlowOnMesh(shield, new THREE.Vector3(1.7, 1.7, 1.7), 0xffffff);
+        return shield;
+    }
+
+    bonusShield() {
+
+        // 0x0000ff
+
+        let shield = this.allModels.bonusShield.clone();
+        shield.scale.set(1.8, 1.8, 1.8);
+        this.putGlowOnMesh(shield, new THREE.Vector3(1.5, 1.5, 1.5), 0x0000ff);
+        return shield;
+    }
+
+    bonusStar() {
+
+        let star = this.allModels.bonusStar.clone();
+        star.rotateZ(Math.PI / 2);
+        star.scale.set(1.8, 1.8, 1.8);
+        this.putGlowOnMesh(star, new THREE.Vector3(1.5, 1.5, 1.5), 0x009900);
+
+        return star;
+    }
+
+    bonusBrake() {
+
+        let arrow = this.allModels.bonusBrake.clone();
+        arrow.scale.set(1.8, 1.8, 1.8);
+        this.putGlowOnMesh(arrow, new THREE.Vector3(1.5, 1.5, 1.5), 0xff0000);
+
+        return arrow;
+    }
+
+    texturedTube(tube, texture) {
+
+        let newMaterial = new THREE.MeshStandardMaterial({
+            side: THREE.BackSide,
+            map: texture
+        });
+
+        newMaterial.emissive = new THREE.Color(255, 255, 255);
+        newMaterial.emissiveIntensity = 0.0001;
+
+        newMaterial.map.wrapS = THREE.RepeatWrapping;
+        newMaterial.map.wrapT = THREE.RepeatWrapping;
+        newMaterial.map.repeat.set(25, 1);
+        tube.material = newMaterial;
     }
 }
